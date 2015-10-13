@@ -1,0 +1,6 @@
+{
+    "name": "opening-hours",
+    "dependencies": {
+        "bootstrap": "~4.0"
+    }
+}
