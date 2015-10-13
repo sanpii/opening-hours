@@ -1,0 +1,18 @@
+<header>
+    <h3 class="text-muted">Opening hours</h3>
+</header>
+
+<div>
+    <fieldset class="form-group">
+        <input type="text" ng-model="where" placeholder="Où ?" class="form-control" />
+    </fieldset>
+    <button ng-click="search();" class="btn btn-default">Rechercher</button>
+</div>
+
+<ul>
+    <li ng-repeat="object in objects">
+        <div class="name">{{ object.tags.name }}</div>
+        <div class="amenity">{{ object.tags.amenity }}</div>
+        <div class="opening_hours">{{ object.tags.opening_hours }}</div>
+    </li>
+</ul>

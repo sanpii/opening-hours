@@ -1,6 +1,9 @@
 {
     "name": "opening-hours",
     "dependencies": {
-        "bootstrap": "~4.0"
+        "bootstrap": "~4.0",
+        "angular": "~1.5",
+        "angular-route": "~1.5",
+        "angular-resource": "~1.5"
     }
 }

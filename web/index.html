@@ -1,35 +1,23 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="opening-hours" ng-csp>
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1">
 
         <title>Opening hours</title>
+        <script src="lib/angular/angular.min.js"></script>
+        <script src="lib/angular-route/angular-route.min.js"></script>
+        <script src="lib/angular-resource/angular-resource.min.js"></script>
+
+        <script src="js/services.js"></script>
+        <script src="js/controllers.js"></script>
+        <script src="js/app.js"></script>
+
+        <link href="lib/angular/angular-csp.css" rel="stylesheet" />
         <link href="lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
         <link href="css/main.css" rel="stylesheet" />
     </head>
     <body class="container">
-        <header>
-            <h3 class="text-muted">Opening hours</h3>
-        </header>
-
-        <div>
-            <fieldset class="form-group">
-                <input type="text" name="where" placeholder="Où ?" class="form-control" />
-            </fieldset>
-            <button id="search" class="btn btn-default">Rechercher</button>
-        </div>
-
-        <ul id="list"></ul>
-
-        <template id="element">
-            <li>
-                <div class="name"></div>
-                <div class="amenity"></div>
-                <div class="opening_hours"></div>
-            </li>
-        </template>
-
-        <script src="js/app.js"></script>
+        <div ng-view></div>
     </body>
 </html>
