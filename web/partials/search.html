@@ -13,9 +13,12 @@
 </div>
 
 <ul>
-    <li ng-repeat="object in objects | filter: what">
-        <div class="name">{{ object.tags.name }}</div>
-        <div class="amenity">{{ object.tags.amenity }}</div>
-        <div class="opening_hours">{{ object.tags.opening_hours }}</div>
+    <li
+        ng-repeat="object in objects | filter: what"
+        class="{{ object.state }}"
+    >
+        <div class="name">{{ object.name }}</div>
+        <div class="amenity">{{ object.amenity }}</div>
+        <div class="amenity">{{ object.opening_hours }}</div>
     </li>
 </ul>
