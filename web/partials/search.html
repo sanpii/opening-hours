@@ -14,11 +14,13 @@
 
 <ul>
     <li
-        ng-repeat="object in objects | filter: what"
-        class="{{ object.state }}"
+        ng-repeat="node in nodes | filter: what"
+        class="{{ node.state }}"
     >
-        <div class="name">{{ object.name }}</div>
-        <div class="amenity">{{ object.amenity }}</div>
-        <div class="amenity">{{ object.opening_hours }}</div>
+        <div>
+            <span class="{{ node.icon }}"></span>
+            {{ node.name }}
+        </div>
+        <div>{{ node.opening_hours }}</div>
     </li>
 </ul>

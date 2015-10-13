@@ -1,9 +1,9 @@
-function getState(value)
+function getState(node)
 {
     var state = '';
 
     try {
-        var opening  = new opening_hours(value.tags.opening_hours, {
+        var opening  = new opening_hours(node.tags.opening_hours, {
             lat: location.lat,
             lon: location.lon,
             address: {
@@ -24,6 +24,25 @@ function getState(value)
     return state;
 }
 
+function getIcon(node)
+{
+    var icon = '';
+    var icons = {
+        bicycle_parking: 'oc-parking-bicycle',
+    };
+
+    if (typeof node.tags.amenity !== 'undefined') {
+        if (typeof icons[node.tags.amenity] !== 'undefined') {
+            icon = icons[node.tags.amenity];
+        }
+        else {
+            icon = 'oc-' + node.tags.amenity.replace('_', '-');
+        }
+    }
+
+    return icon;
+}
+
 function SearchController($scope, $http)
 {
     $scope.search = function () {
@@ -42,21 +61,22 @@ function SearchController($scope, $http)
             $http({
                 url: 'http://overpass-api.de/api/interpreter?data=[out:json][timeout:25];node["opening_hours"](' + box.join() + ');out+body;'
             }).then(function sucess(response) {
-                $scope.objects = [];
+                $scope.nodes = [];
 
-                response.data.elements.forEach(function (value) {
+                response.data.elements.forEach(function (node) {
                     if (
-                        typeof value.tags.name == 'undefined'
-                        && typeof value.tags.amenity == 'undefined'
+                        typeof node.tags.name == 'undefined'
+                        && typeof node.tags.amenity == 'undefined'
                     ) {
                         return;
                     }
 
-                    $scope.objects.push({
-                        name: value.tags.name,
-                        amenity: value.tags.amenity,
-                        opening_hours: value.tags.opening_hours,
-                        state: getState(value),
+                    $scope.nodes.push({
+                        name: typeof node.tags.name !== 'undefined' ? node.tags.name : node.tags.amenity,
+                        amenity: node.tags.amenity,
+                        opening_hours: node.tags.opening_hours,
+                        state: getState(node),
+                        icon: getIcon(node),
                     });
                 });
             });
