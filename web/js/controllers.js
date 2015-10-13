@@ -1,3 +1,61 @@
+function SearchController($scope, $http, $routeParams, $location)
+{
+    $scope.where = $routeParams.where;
+    $scope.what = $routeParams.what;
+
+    $scope.search = function () {
+        if (typeof $scope.what === 'undefined') {
+            $scope.what = '';
+        }
+
+        $location.url('/' + $scope.where + '/' + $scope.what);
+    };
+
+    if ($scope.where !== '') {
+        search($scope, $http);
+    }
+}
+SearchController.$inject = ['$scope', '$http', '$routeParams', '$location'];
+
+function search($scope, $http)
+{
+    $http({
+        url: 'http://nominatim.openstreetmap.org/search?format=json&q=' + $scope.where
+    }).then(function success(response) {
+        var location = response.data[0];
+
+        box = [
+            location.boundingbox[0],
+            location.boundingbox[2],
+            location.boundingbox[1],
+            location.boundingbox[3],
+        ];
+
+        $http({
+            url: 'http://overpass-api.de/api/interpreter?data=[out:json][timeout:25];node["opening_hours"](' + box.join() + ');out+body;'
+        }).then(function sucess(response) {
+            $scope.nodes = [];
+
+            response.data.elements.forEach(function (node) {
+                if (
+                    typeof node.tags.name == 'undefined'
+                && typeof node.tags.amenity == 'undefined'
+                ) {
+                    return;
+                }
+
+                $scope.nodes.push({
+                    name: typeof node.tags.name !== 'undefined' ? node.tags.name : node.tags.amenity,
+                    amenity: node.tags.amenity,
+                    opening_hours: node.tags.opening_hours,
+                    state: getState(node),
+                    icon: getIcon(node),
+                });
+            });
+        });
+    });
+}
+
 function getState(node)
 {
     var state = '';
@@ -42,46 +100,3 @@ function getIcon(node)
 
     return icon;
 }
-
-function SearchController($scope, $http)
-{
-    $scope.search = function () {
-        $http({
-            url: 'http://nominatim.openstreetmap.org/search?format=json&q=' + $scope.where
-        }).then(function success(response) {
-            var location = response.data[0];
-
-            box = [
-                location.boundingbox[0],
-                location.boundingbox[2],
-                location.boundingbox[1],
-                location.boundingbox[3],
-            ];
-
-            $http({
-                url: 'http://overpass-api.de/api/interpreter?data=[out:json][timeout:25];node["opening_hours"](' + box.join() + ');out+body;'
-            }).then(function sucess(response) {
-                $scope.nodes = [];
-
-                response.data.elements.forEach(function (node) {
-                    if (
-                        typeof node.tags.name == 'undefined'
-                        && typeof node.tags.amenity == 'undefined'
-                    ) {
-                        return;
-                    }
-
-                    $scope.nodes.push({
-                        name: typeof node.tags.name !== 'undefined' ? node.tags.name : node.tags.amenity,
-                        amenity: node.tags.amenity,
-                        opening_hours: node.tags.opening_hours,
-                        state: getState(node),
-                        icon: getIcon(node),
-                    });
-                });
-            });
-        });
-    };
-}
-
-SearchController.$inject = ['$scope', '$http'];
