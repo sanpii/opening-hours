@@ -31,6 +31,7 @@ function SearchController($scope, $http, $routeParams, $location)
     }
 
     initMap($scope);
+    $scope.searching = false;
 
     $scope.search = function () {
         var url = '/' + $scope.where + '/' + $scope.what;
@@ -79,6 +80,8 @@ function initMap($scope)
 
 function search($scope, $http)
 {
+    $scope.searching = true;
+
     $http({
         url: 'http://open.mapquestapi.com/nominatim/v1/search.php?key=' + mapquest_api_key + '&format=json&q=' + $scope.where
     }).then(function success(response) {
@@ -139,6 +142,8 @@ function updateNodes($scope, $http, box)
         });
 
         $scope.nodes = nodes;
+
+        $scope.searching = false;
     });
 }
 
