@@ -31,6 +31,8 @@
     <button ng-click="search();" class="btn btn-primary">Rechercher</button>
 </form>
 
+<div class="alert alert-danger" ng-show="where && nodes.length === 0">Aucun résultat.</div>
+
 <div id="map" ng-show="nodes.length > 0"></div>
 
 <ul ng-show="nodes.length > 0">
