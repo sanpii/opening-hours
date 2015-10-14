@@ -1,3 +1,5 @@
+'use strict';
+
 function SearchController($scope, $http, $routeParams, $location)
 {
     if (typeof $routeParams.where === 'undefined') {
@@ -61,7 +63,7 @@ function initMap($scope)
 {
     $scope.map = L.map('map');
 
-    L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6IjZjNmRjNzk3ZmE2MTcwOTEwMGY0MzU3YjUzOWFmNWZhIn0.Y8bhBaUMqFiPrDRW9hieoQ', {
+    L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=' + mapbox_api_key, {
         maxZoom: 18,
         attribution: '',
         id: 'mapbox.streets'
@@ -71,7 +73,7 @@ function initMap($scope)
 function search($scope, $http)
 {
     $http({
-        url: 'http://nominatim.openstreetmap.org/search?format=json&q=' + $scope.where
+        url: 'http://open.mapquestapi.com/nominatim/v1/search.php?key=' + mapquest_api_key + '&format=json&q=' + $scope.where
     }).then(function success(response) {
         var location = response.data[0];
 
