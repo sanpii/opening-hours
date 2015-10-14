@@ -46,7 +46,7 @@ function SearchController($scope, $http, $routeParams, $location)
         }
 
         url += '?' + params.join('&');
-        $location.url(url);
+        $location.url(url.toLowerCase());
     };
 
     if ($scope.where !== '') {
