@@ -23,8 +23,19 @@
         <link href="css/main.css" rel="stylesheet" />
     </head>
     <body class="container">
+        <header>
+            <h3 class="text-muted">Horaires</h3>
+        </header>
+
         <div ng-view></div>
 
-        <script src="lib/leaflet/dist/leaflet.js"></script>
-    </body>
+        <footer>
+            <a href="/#about">À propos</a> —
+            Data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors,
+            <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>,
+            Imagery © <a href="http://mapbox.com">Mapbox</a>
+        </footer>
+
+    <script src="lib/leaflet/dist/leaflet.js"></script>
+</body>
 </html>
