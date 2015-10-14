@@ -14,8 +14,21 @@ function SearchController($scope, $http, $routeParams, $location)
         $scope.what = $routeParams.what;
     }
 
+    if (typeof $routeParams.strict === 'undefined') {
+        $scope.strict = false;
+    }
+    else {
+        $scope.strict = $routeParams.strict;
+    }
+
     $scope.search = function () {
-        $location.url('/' + $scope.where + '/' + $scope.what);
+        var url = '/' + $scope.where + '/' + $scope.what;
+
+        if ($scope.strict) {
+            url += '?strict';
+        }
+
+        $location.url(url);
     };
 
     if ($scope.where !== '') {
@@ -74,19 +87,28 @@ function search($scope, $http)
 function updateList($scope, $http, box)
 {
     if ($scope.what !== '') {
-        var request = '[out:json][timeout:25]; \
-( \
-    node["amenity"!~".*"]["opening_hours"](' + box.join() + '); \
-    node["amenity"="' + $scope.what + '"]["opening_hours"](' + box.join() + '); \
-); \
-out+body;';
+        if ($scope.strict) {
+            var request = '[out:json][timeout:25]; \
+            ( \
+                node["amenity"="' + $scope.what + '"]["opening_hours"](' + box.join() + '); \
+            ); \
+            out+body;';
+        }
+        else {
+            var request = '[out:json][timeout:25]; \
+            ( \
+                node["amenity"!~".*"]["opening_hours"](' + box.join() + '); \
+                node["amenity"="' + $scope.what + '"]["opening_hours"](' + box.join() + '); \
+            ); \
+            out+body;';
+        }
     }
     else {
         var request = '[out:json][timeout:25]; \
-( \
-    node["opening_hours"](' + box.join() + '); \
-); \
-out+body;';
+        ( \
+            node["opening_hours"](' + box.join() + '); \
+        ); \
+        out+body;';
     }
 
     $http({
