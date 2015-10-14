@@ -1,27 +1,44 @@
 header {
     border-bottom: 1px solid #E5E5E5;
-    margin-bottom: 50px;
+    margin-bottom: 20px;
 }
 
 footer {
     border-top: 1px solid #E5E5E5;
-    margin-top: 50px;
+    margin-top: 20px;
 }
 
 form {
     margin-bottom: 20px;
 }
 
-.open {
-    color: green;
-}
-
-.closed {
-    color: red;
-}
-
 #map {
     height: 280px;
+    margin-bottom: 20px;
+}
+
+ul {
+    list-style: none outside none;
+    padding-left: 0;
+}
+
+li {
+    padding: 10px 10px;
+    margin: 10px 0;
+    border-radius: 4px;
+    background-color: #F5F5F5;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    font-size: 1.5em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+li.closed {
+    background-color: rgb(242, 222, 222);
+}
+
+li.open {
+    background-color: rgb(222, 242, 222);
 }
 
 .help .tooltips {
