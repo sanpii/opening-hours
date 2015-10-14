@@ -1,14 +1,20 @@
 <!DOCTYPE html>
-<html ng-app="opening-hours" ng-csp>
+<html manifest="opening-hours.manifest" ng-app="opening-hours" ng-csp>
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1">
         <title>Horaires</title>
 
+
+        <link rel="icon" href="img/icon-32.png" sizes="32x32" />
+        <link rel="icon" href="img/icon-64.png" sizes="64x64" />
+        <link rel="icon" href="img/icon-128.png" sizes="128x128" />
+
         <script src="lib/angular/angular.min.js"></script>
         <script src="lib/angular-route/angular-route.min.js"></script>
         <script src="lib/angular-resource/angular-resource.min.js"></script>
         <script src="lib/opening_hours/opening_hours.js"></script>
+        <script src="lib/leaflet/dist/leaflet.js"></script>
 
         <script src="js/config/current.js"></script>
         <script src="js/controllers.js"></script>
@@ -35,6 +41,5 @@
             Imagery © <a href="http://mapbox.com">Mapbox</a>
         </footer>
 
-    <script src="lib/leaflet/dist/leaflet.js"></script>
 </body>
 </html>

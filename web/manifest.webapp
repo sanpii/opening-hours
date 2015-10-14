@@ -1,0 +1,16 @@
+{
+    "name": "horaires",
+    "description": "Trouver les horaires d’ouverture",
+    "version": "1.0.0",
+    "developer": {
+        "name": "Sanpi"
+    },
+    "launch_path": "/index.html",
+    "icons": {
+        "32": "/img/icon-32.png",
+        "64": "/img/icon-64.png",
+        "128": "/img/icon-128.png",
+        "256": "/img/icon-256.png",
+        "512": "/img/icon-512.png"
+    }
+}

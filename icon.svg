@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="210mm"
+   height="297mm"
+   viewBox="0 0 744.09448819 1052.3622047"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="icon.svg"
+   inkscape:export-filename="/home/sanpi/projects/php/opening-hours/web/img/icon-512.png"
+   inkscape:export-xdpi="168.54176"
+   inkscape:export-ydpi="168.54176">
+  <defs
+     id="defs4">
+    <linearGradient
+       gradientTransform="translate(213.93539,-181.15859)"
+       inkscape:collect="always"
+       xlink:href="#linearGradient4300"
+       id="linearGradient4260"
+       x1="-320.93362"
+       y1="354.28571"
+       x2="-583.07648"
+       y2="627.85706"
+       gradientUnits="userSpaceOnUse"
+       spreadMethod="repeat" />
+    <linearGradient
+       id="linearGradient4300"
+       inkscape:collect="always">
+      <stop
+         id="stop4288"
+         offset="0"
+         style="stop-color:#2ada31;stop-opacity:1" />
+      <stop
+         id="stop4290"
+         offset="1"
+         style="stop-color:#ff0000;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.4"
+     inkscape:cx="187.25774"
+     inkscape:cy="796.05852"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1676"
+     inkscape:window-height="957"
+     inkscape:window-x="0"
+     inkscape:window-y="72"
+     inkscape:window-maximized="0" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Calque 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       style="fill:#45be2b;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:10;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="path4154-3"
+       sodipodi:type="arc"
+       sodipodi:cx="294.84152"
+       sodipodi:cy="-174.73997"
+       sodipodi:rx="119.64286"
+       sodipodi:ry="119.64286"
+       sodipodi:start="0"
+       sodipodi:end="5.2359878"
+       sodipodi:open="true"
+       d="m 414.48438,-174.73997 a 119.64286,119.64286 0 0 1 -88.67701,115.566124 119.64286,119.64286 0 0 1 -134.57961,-55.744704 119.64286,119.64286 0 0 1 19.01349,-144.42171 119.64286,119.64286 0 0 1 144.42171,-19.01347"
+       transform="matrix(0.21418076,0.97679404,-0.97679404,0.21418076,0,0)"
+       inkscape:export-filename="/home/sanpi/projects/php/opening-hours/web/img/rect4156-7.png"
+       inkscape:export-xdpi="18"
+       inkscape:export-ydpi="18" />
+    <path
+       style="fill:url(#linearGradient4260);fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:10;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="path4154"
+       sodipodi:type="arc"
+       sodipodi:cx="-250.9375"
+       sodipodi:cy="235.62367"
+       sodipodi:rx="119.64286"
+       sodipodi:ry="119.64286"
+       sodipodi:start="0"
+       sodipodi:end="5.2359878"
+       sodipodi:open="true"
+       d="m -131.29464,235.62367 a 119.64286,119.64286 0 0 1 -88.67701,115.56613 119.64286,119.64286 0 0 1 -134.57961,-55.7447 119.64286,119.64286 0 0 1 19.01348,-144.42171 119.64286,119.64286 0 0 1 144.42171,-19.01347"
+       transform="matrix(0,-1,1,0,0,0)"
+       inkscape:export-filename="/home/sanpi/projects/php/opening-hours/web/img/icon-512.png"
+       inkscape:export-xdpi="184.85001"
+       inkscape:export-ydpi="184.85001" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:10;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 134.15786,185.88208 16.64635,44.99378 -16.75309,-45.3993 -42.228423,19.54114 z"
+       id="rect4156"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccc"
+       inkscape:export-filename="/home/sanpi/projects/php/opening-hours/web/img/rect4156-7.png"
+       inkscape:export-xdpi="18"
+       inkscape:export-ydpi="18" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:10;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 234.53026,273.49234 -41.04604,-24.83471 41.38211,25.08551 56.58257,-75.16003 z"
+       id="rect4156-7"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccc"
+       inkscape:export-filename="/home/sanpi/projects/php/opening-hours/web/img/rect4156-7.png"
+       inkscape:export-xdpi="18"
+       inkscape:export-ydpi="18" />
+  </g>
+</svg>
