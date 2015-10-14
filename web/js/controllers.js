@@ -73,8 +73,24 @@ function search($scope, $http)
 
 function updateList($scope, $http, box)
 {
+    if ($scope.what !== '') {
+        var request = '[out:json][timeout:25]; \
+( \
+    node["amenity"!~".*"]["opening_hours"](' + box.join() + '); \
+    node["amenity"="' + $scope.what + '"]["opening_hours"](' + box.join() + '); \
+); \
+out+body;';
+    }
+    else {
+        var request = '[out:json][timeout:25]; \
+( \
+    node["opening_hours"](' + box.join() + '); \
+); \
+out+body;';
+    }
+
     $http({
-        url: 'http://overpass-api.de/api/interpreter?data=[out:json][timeout:25];node["opening_hours"](' + box.join() + ');out+body;'
+        url: 'http://overpass-api.de/api/interpreter?data=' + request
     }).then(function sucess(response) {
         $scope.nodes = [];
 
