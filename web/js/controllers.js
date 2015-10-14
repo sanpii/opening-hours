@@ -30,6 +30,8 @@ function SearchController($scope, $http, $routeParams, $location)
         $scope.wo_hour = $routeParams.wo_hour;
     }
 
+    initMap($scope);
+
     $scope.search = function () {
         var url = '/' + $scope.where + '/' + $scope.what;
         var params = [];
@@ -52,21 +54,13 @@ function SearchController($scope, $http, $routeParams, $location)
 
     $scope.$watch('box', function (newValue, oldValue) {
         if (typeof newValue !== 'undefined') {
-            updateList($scope, $http, newValue);
+            updateNodes($scope, $http, newValue);
         }
     });
 
     $scope.$watch('nodes', function (newValue, oldValue) {
         if (typeof newValue !== 'undefined') {
-            updateNodes($scope.map, newValue);
-        }
-    });
-
-    initMap($scope);
-
-    $scope.$watch('box', function (newValue, oldValue) {
-        if (typeof newValue !== 'undefined') {
-            updateMap($scope.map, newValue);
+            updateMap($scope.map, $scope.box, newValue);
         }
     });
 }
@@ -99,10 +93,10 @@ function search($scope, $http)
     });
 }
 
-function updateList($scope, $http, box)
+function updateNodes($scope, $http, box)
 {
-    var request = '[out:json][timeout:25];(';
     var node = 'node';
+    var request = '[out:json][timeout:25];(';
 
     if (!$scope.wo_hour) {
         node += '["opening_hours"]';
@@ -122,18 +116,18 @@ function updateList($scope, $http, box)
 
     $http({
         url: 'http://overpass-api.de/api/interpreter?data=' + request
-    }).then(function sucess(response) {
-        $scope.nodes = [];
+    }).then(function (response) {
+        var nodes = [];
 
         response.data.elements.forEach(function (node) {
             if (
                 typeof node.tags.name === 'undefined'
-            && typeof node.tags.amenity === 'undefined'
+                && typeof node.tags.amenity === 'undefined'
             ) {
                 return;
             }
 
-            $scope.nodes.push({
+            nodes.push({
                 lat: node.lat,
                 lon: node.lon,
                 name: typeof node.tags.name !== 'undefined' ? node.tags.name : node.tags.amenity,
@@ -143,18 +137,12 @@ function updateList($scope, $http, box)
                 icon: getIcon(node),
             });
         });
+
+        $scope.nodes = nodes;
     });
 }
 
-function updateMap(map, box)
-{
-    map.fitBounds([
-        [box[0], box[1]],
-        [box[2], box[3]],
-    ]);
-}
-
-function updateNodes(map, nodes)
+function updateMap(map, box, nodes)
 {
     nodes.forEach(function (node) {
         L.circle([node.lat, node.lon], 5, {
@@ -166,6 +154,11 @@ function updateNodes(map, nodes)
             '<div>' + node.opening_hours + '</div>'
         );
     });
+
+    setTimeout(function () {
+        map.invalidateSize();
+        map.fitBounds(nodes);
+    }, 10);
 }
 
 function getState(node)

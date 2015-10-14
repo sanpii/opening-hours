@@ -31,9 +31,9 @@
     <button ng-click="search();" class="btn btn-primary">Rechercher</button>
 </form>
 
-<div id="map"></div>
+<div id="map" ng-show="nodes.length > 0"></div>
 
-<ul>
+<ul ng-show="nodes.length > 0">
     <li
         ng-repeat="node in nodes"
         class="{{ node.state }}"
