@@ -23,13 +23,26 @@ function SearchController($scope, $http, $routeParams, $location)
         $scope.strict = $routeParams.strict;
     }
 
+    if (typeof $routeParams.wo_hour === 'undefined') {
+        $scope.wo_hour = false;
+    }
+    else {
+        $scope.wo_hour = $routeParams.wo_hour;
+    }
+
     $scope.search = function () {
         var url = '/' + $scope.where + '/' + $scope.what;
+        var params = [];
 
         if ($scope.strict) {
-            url += '?strict';
+            params.push('strict');
         }
 
+        if ($scope.wo_hour) {
+            params.push('wo_hour');
+        }
+
+        url += '?' + params.join('&');
         $location.url(url);
     };
 
@@ -88,30 +101,24 @@ function search($scope, $http)
 
 function updateList($scope, $http, box)
 {
+    var request = '[out:json][timeout:25];(';
+    var node = 'node';
+
+    if (!$scope.wo_hour) {
+        node += '["opening_hours"]';
+    }
+
     if ($scope.what !== '') {
-        if ($scope.strict) {
-            var request = '[out:json][timeout:25]; \
-            ( \
-                node["amenity"="' + $scope.what + '"]["opening_hours"](' + box.join() + '); \
-            ); \
-            out+body;';
-        }
-        else {
-            var request = '[out:json][timeout:25]; \
-            ( \
-                node["amenity"!~".*"]["opening_hours"](' + box.join() + '); \
-                node["amenity"="' + $scope.what + '"]["opening_hours"](' + box.join() + '); \
-            ); \
-            out+body;';
+        request += node + '["amenity"="' + $scope.what + '"](' + box.join() + ');';
+        if (!$scope.strict) {
+            request += node + '["amenity"!~".*"](' + box.join() + ');';
         }
     }
     else {
-        var request = '[out:json][timeout:25]; \
-        ( \
-            node["opening_hours"](' + box.join() + '); \
-        ); \
-        out+body;';
+        request += node + '(' + box.join() + ');';
     }
+
+    request += '); out+body;';
 
     $http({
         url: 'http://overpass-api.de/api/interpreter?data=' + request
