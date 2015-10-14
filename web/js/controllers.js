@@ -114,7 +114,12 @@ function updateNodes(map, nodes)
     nodes.forEach(function (node) {
         L.circle([node.lat, node.lon], 5, {
             color: node.state == 'open' ? 'green' : node.state == 'closed' ? 'red' : 'black',
-        }).addTo(map);
+        }).addTo(map).bindPopup('<div>' +
+            '<span class="' + node.icon + '"></span>' +
+            node.name +
+            '</div>' +
+            '<div>' + node.opening_hours + '</div>'
+        );
     });
 }
 
