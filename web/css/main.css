@@ -10,3 +10,7 @@ header {
 .closed {
     color: red;
 }
+
+#map {
+    height: 280px;
+}

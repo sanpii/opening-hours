@@ -6,6 +6,7 @@
         "angular-route": "~1.5",
         "angular-resource": "~1.5",
         "opening_hours": "https://github.com/ypid/opening_hours.js.git",
-        "osmic": "https://github.com/gmgeo/osmic.git"
+        "osmic": "https://github.com/gmgeo/osmic.git",
+        "leaflet": "~0.7"
     }
 }
