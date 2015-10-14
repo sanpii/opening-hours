@@ -83,7 +83,7 @@ function search($scope, $http)
     $scope.searching = true;
 
     $http({
-        url: 'http://open.mapquestapi.com/nominatim/v1/search.php?key=' + mapquest_api_key + '&format=json&q=' + $scope.where
+        url: 'https://open.mapquestapi.com/nominatim/v1/search.php?key=' + mapquest_api_key + '&format=json&q=' + $scope.where
     }).then(function success(response) {
         var location = response.data[0];
 
@@ -118,7 +118,7 @@ function updateNodes($scope, $http, box)
     request += '); out+body;';
 
     $http({
-        url: 'http://overpass-api.de/api/interpreter?data=' + request
+        url: 'https://overpass-api.de/api/interpreter?data=' + request
     }).then(function (response) {
         var nodes = [];
 
