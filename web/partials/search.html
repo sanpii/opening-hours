@@ -29,7 +29,7 @@
 
 <div class="alert alert-danger" ng-show="where && nodes.length === 0">Aucun résultat.</div>
 
-<div class="alert alert-info" ng-show="searching">Recherche en cours…</div>
+<progress class="progress" value="{{ progress }}" max="100" ng-show="searching">{{ progress }}%</progress>
 
 <div id="map" ng-show="nodes.length > 0"></div>
 

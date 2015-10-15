@@ -31,6 +31,7 @@ function SearchController($scope, $http, $routeParams, $location)
     }
 
     initMap($scope);
+    $scope.progress = 0;
     $scope.searching = false;
 
     $scope.search = function () {
@@ -82,6 +83,7 @@ function search($scope, $http)
 {
     $scope.searching = true;
 
+    push($scope);
     $http({
         url: 'https://open.mapquestapi.com/nominatim/v1/search.php?key=' + mapquest_api_key + '&format=json&q=' + $scope.where
     }).then(function success(response) {
@@ -93,6 +95,7 @@ function search($scope, $http)
             location.boundingbox[1],
             location.boundingbox[3],
         ];
+        push($scope);
     });
 }
 
@@ -117,6 +120,7 @@ function updateNodes($scope, $http, box)
 
     request += '); out+body;';
 
+    push($scope);
     $http({
         url: 'https://overpass-api.de/api/interpreter?data=' + request
     }).then(function (response) {
@@ -142,6 +146,7 @@ function updateNodes($scope, $http, box)
         });
 
         $scope.nodes = nodes;
+        push($scope);
 
         $scope.searching = false;
     });
@@ -209,4 +214,9 @@ function getIcon(node)
     }
 
     return icon;
+}
+
+function push($scope)
+{
+    $scope.progress += 25;
 }
