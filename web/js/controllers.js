@@ -61,7 +61,7 @@ function SearchController($scope, $http, $routeParams, $location)
     });
 
     $scope.$watch('nodes', function (newValue, oldValue) {
-        if (typeof newValue !== 'undefined') {
+        if (typeof newValue !== 'undefined' && newValue.length > 0) {
             updateMap($scope.map, $scope.box, newValue);
         }
     });
@@ -126,10 +126,17 @@ function updateNodes($scope, $http, box)
     }).then(function (response) {
         var nodes = [];
 
+        if (response.data.elements.length === 0) {
+            return;
+        }
+
         response.data.elements.forEach(function (node) {
             if (
-                typeof node.tags.name === 'undefined'
-                && typeof node.tags.amenity === 'undefined'
+                typeof node.tags === 'undefined'
+                || (
+                    typeof node.tags.name === 'undefined'
+                    && typeof node.tags.amenity === 'undefined'
+                )
             ) {
                 return;
             }
