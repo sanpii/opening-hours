@@ -1,2 +1,5 @@
+/*.zip
+/*.apk
+/node_modules
 /web/lib
 /web/js/config/current.js
