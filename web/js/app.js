@@ -7,7 +7,7 @@ app.config(['$routeProvider', function($routeProvider) {
         templateUrl: 'partials/about.html'
     });
 
-    $routeProvider.when('/:where?/:what?', {
+    $routeProvider.when('/:where?/:type?', {
         templateUrl: 'partials/search.html',
         controller: SearchController
     });

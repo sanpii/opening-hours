@@ -4,21 +4,12 @@
     </fieldset>
 
     <fieldset class="form-group">
-        <input type="text" ng-model="what" placeholder="Quoi ?" class="form-control" />
+        <select class="form-control" ng-model="type" ng-options="type for type in types track by type">
+            <option value=""></option>
+        </select>
     </fieldset>
 
     <div class="checkbox">
-        <label>
-            <input type="checkbox" ng-model="strict" /> Strict
-        </label>
-        <a class="help">
-            ?
-            <span class="tooltips alert alert-info">
-                Par défaut, les nœuds sans type sont affichés.<br />
-                Cochez cette options pour les masquer.
-            </span>
-        </a>
-
         <label>
             <input type="checkbox" ng-model="wo_hour" /> Sans horaire
         </label>

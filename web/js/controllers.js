@@ -9,11 +9,11 @@ function SearchController($scope, $http, $routeParams, $location)
         $scope.where = $routeParams.where;
     }
 
-    if (typeof $routeParams.what === 'undefined') {
-        $scope.what = '';
+    if (typeof $routeParams.type === 'undefined') {
+        $scope.type = 'all';
     }
     else {
-        $scope.what = $routeParams.what;
+        $scope.type = $routeParams.type;
     }
 
     if (typeof $routeParams.strict === 'undefined') {
@@ -31,16 +31,13 @@ function SearchController($scope, $http, $routeParams, $location)
     }
 
     initMap($scope);
+    initType($scope, $http);
     $scope.progress = 0;
     $scope.searching = false;
 
     $scope.search = function () {
-        var url = '/' + $scope.where + '/' + $scope.what;
+        var url = '/' + $scope.where + '/' + $scope.type;
         var params = [];
-
-        if ($scope.strict) {
-            params.push('strict');
-        }
 
         if ($scope.wo_hour) {
             params.push('wo_hour');
@@ -79,6 +76,112 @@ function initMap($scope)
     }).addTo($scope.map);
 }
 
+function initType($scope, $http)
+{
+    $scope.types = [
+        'animal_boarding',
+        'animal_shelter',
+        'arts_centre',
+        'atm',
+        'baby_hatch',
+        'bank',
+        'bar',
+        'bbq',
+        'bench',
+        'bicycle parking',
+        'bicycle rental',
+        'bicycle_repair_station',
+        'biergarten',
+        'boat_sharing',
+        'brothel',
+        'bureau de change',
+        'bus_station',
+        'cafe',
+        'car rental',
+        'car sharing',
+        'car wash',
+        'casino',
+        'charging_station',
+        'cinema',
+        'clinic',
+        'clock',
+        'college',
+        'community_centre',
+        'courthouse',
+        'coworking_space',
+        'crematorium',
+        'crypt',
+        'dentist',
+        'doctors',
+        'dojo',
+        'drinking_water',
+        'embassy',
+        'ev_charging',
+        'fast food',
+        'ferry_terminal',
+        'firepit',
+        'fire_station',
+        'food court',
+        'fountain',
+        'fuel',
+        'gambling',
+        'game_feeding',
+        'grave_yard',
+        'grit_bin',
+        'gym',
+        'hospital',
+        'hunting_stand',
+        'ice_cream',
+        'kindergarten',
+        'kneipp_water_cure',
+        'library',
+        'marketplace',
+        'motorcycle parking',
+        'nightclub',
+        'nursing_home',
+        'parking',
+        'parking_entrance',
+        'parking_space',
+        'pharmacy',
+        'photo_booth',
+        'place of worship',
+        'planetarium',
+        'police',
+        'post_box',
+        'post_office',
+        'prison',
+        'pub',
+        'public_bookcase',
+        'public_building',
+        'ranger_station',
+        'recycling',
+        'register_office',
+        'rescue_station',
+        'restaurant',
+        'sauna',
+        'school',
+        'shelter',
+        'shower',
+        'social_centre',
+        'social_facility',
+        'stripclub',
+        'studio',
+        'swingerclub',
+        'taxi',
+        'telephone',
+        'theatre',
+        'toilets',
+        'townhall',
+        'university',
+        'vending_machine',
+        'veterinary',
+        'waste_basket',
+        'waste_disposal',
+        'watering_place',
+        'water_point',
+    ];
+}
+
 function search($scope, $http)
 {
     $scope.searching = true;
@@ -104,24 +207,17 @@ function search($scope, $http)
 
 function updateNodes($scope, $http, box)
 {
-    var node = 'node';
-    var request = '[out:json][timeout:25];(';
+    var request = '[out:json][timeout:25]; (node';
 
     if (!$scope.wo_hour) {
-        node += '["opening_hours"]';
+        request += '["opening_hours"]';
     }
 
-    if ($scope.what !== '') {
-        request += node + '["amenity"="' + $scope.what + '"](' + box.join() + ');';
-        if (!$scope.strict) {
-            request += node + '["amenity"!~".*"](' + box.join() + ');';
-        }
-    }
-    else {
-        request += node + '(' + box.join() + ');';
+    if ($scope.type !== 'all') {
+        request += '["amenity"="' + $scope.type + '"]';
     }
 
-    request += '); out+body;';
+    request += '(' + box.join() + ');); out+body;';
 
     push($scope);
     $http({
