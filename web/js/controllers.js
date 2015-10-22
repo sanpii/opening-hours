@@ -16,11 +16,11 @@ function SearchController($scope, $http, $routeParams, $location)
         $scope.type = $routeParams.type;
     }
 
-    if (typeof $routeParams.strict === 'undefined') {
-        $scope.strict = false;
+    if (typeof $routeParams.what === 'undefined') {
+        $scope.what = '';
     }
     else {
-        $scope.strict = $routeParams.strict;
+        $scope.what = $routeParams.what;
     }
 
     if (typeof $routeParams.wo_hour === 'undefined') {
@@ -36,7 +36,7 @@ function SearchController($scope, $http, $routeParams, $location)
     $scope.searching = false;
 
     $scope.search = function () {
-        var url = '/' + $scope.where + '/' + $scope.type;
+        var url = '/' + $scope.where + '/' + $scope.type + '/' + $scope.what;
         var params = [];
 
         if ($scope.wo_hour) {
@@ -215,6 +215,10 @@ function updateNodes($scope, $http, box)
 
     if ($scope.type !== 'all') {
         request += '["amenity"="' + $scope.type + '"]';
+    }
+
+    if ($scope.what !== '') {
+        request += '["name"~".*' + $scope.what + '.*", i]';
     }
 
     request += '(' + box.join() + ');); out+body;';

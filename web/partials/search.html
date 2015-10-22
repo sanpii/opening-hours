@@ -5,8 +5,12 @@
 
     <fieldset class="form-group">
         <select class="form-control" ng-model="type" ng-options="type for type in types track by type">
-            <option value=""></option>
+            <option value="">Quoi ?</option>
         </select>
+    </fieldset>
+
+    <fieldset class="form-group">
+        <input type="text" ng-model="what" placeholder="Nom ?" class="form-control" />
     </fieldset>
 
     <div class="checkbox">
