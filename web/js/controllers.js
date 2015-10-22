@@ -96,6 +96,9 @@ function search($scope, $http)
             location.boundingbox[3],
         ];
         push($scope);
+    }, function error(response) {
+        $scope.error = response.data;
+        $scope.searching = false;
     });
 }
 
@@ -123,7 +126,7 @@ function updateNodes($scope, $http, box)
     push($scope);
     $http({
         url: 'https://overpass-api.de/api/interpreter?data=' + request
-    }).then(function (response) {
+    }).then(function success(response) {
         var nodes = [];
 
         if (response.data.elements.length === 0) {
@@ -155,6 +158,9 @@ function updateNodes($scope, $http, box)
         $scope.nodes = nodes;
         push($scope);
 
+        $scope.searching = false;
+    }, function error(response) {
+        $scope.error = response.data;
         $scope.searching = false;
     });
 }

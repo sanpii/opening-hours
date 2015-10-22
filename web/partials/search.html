@@ -27,7 +27,9 @@
     <button ng-click="search();" class="btn btn-primary">Rechercher</button>
 </form>
 
-<div class="alert alert-danger" ng-show="where && nodes.length === 0">Aucun résultat.</div>
+<div class="alert alert-danger" ng-show="error">{{ error }}</div>
+
+<div class="alert alert-warning" ng-show="where && nodes.length === 0">Aucun résultat.</div>
 
 <progress class="progress" value="{{ progress }}" max="100" ng-show="searching">{{ progress }}%</progress>
 
