@@ -225,31 +225,29 @@ function updateNodes($scope, $http, box)
     }).then(function success(response) {
         var nodes = [];
 
-        if (response.data.elements.length === 0) {
-            return;
-        }
+        if (response.data.elements.length !== 0) {
+            response.data.elements.forEach(function (node) {
+                if (
+                    typeof node.tags === 'undefined'
+                        || (
+                            typeof node.tags.name === 'undefined'
+                            && typeof node.tags.amenity === 'undefined'
+                        )
+                ) {
+                    return;
+                }
 
-        response.data.elements.forEach(function (node) {
-            if (
-                typeof node.tags === 'undefined'
-                || (
-                    typeof node.tags.name === 'undefined'
-                    && typeof node.tags.amenity === 'undefined'
-                )
-            ) {
-                return;
-            }
-
-            nodes.push({
-                lat: node.lat,
-                lon: node.lon,
-                name: typeof node.tags.name !== 'undefined' ? node.tags.name : node.tags.amenity,
-                amenity: node.tags.amenity,
-                opening_hours: node.tags.opening_hours,
-                state: getState(node),
-                icon: getIcon(node),
+                nodes.push({
+                    lat: node.lat,
+                    lon: node.lon,
+                    name: typeof node.tags.name !== 'undefined' ? node.tags.name : node.tags.amenity,
+                    amenity: node.tags.amenity,
+                    opening_hours: node.tags.opening_hours,
+                    state: getState(node),
+                    icon: getIcon(node),
+                });
             });
-        });
+        }
 
         $scope.nodes = nodes;
         push($scope);
