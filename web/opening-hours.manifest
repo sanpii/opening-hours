@@ -1,9 +1,10 @@
 CACHE MANIFEST
 
-# v3
+# v4
 
 CACHE:
 css/main.css
+index.html
 img/icon-32.png
 img/icon-64.png
 img/icon-128.png
@@ -21,8 +22,12 @@ lib/leaflet/dist/leaflet.css
 lib/leaflet/dist/leaflet.js
 lib/opening_hours/opening_hours.js
 lib/osmic/font/osmic.css
-lib/partial/about.html
-lib/partial/search.html
+lib/osmic/font/osmic.eot
+lib/osmic/font/osmic.svg
+lib/osmic/font/osmic.ttf
+lib/osmic/font/osmic.woff
+partials/about.html
+partials/search.html
 
 NETWORK:
 *
