@@ -32,6 +32,8 @@ function SearchController($scope, $http, $routeParams, $location)
 
     initMap($scope);
     initType($scope, $http);
+    $scope.nodes = [];
+    $scope.allNodes = [];
     $scope.progress = 0;
     $scope.searching = false;
 
@@ -45,6 +47,17 @@ function SearchController($scope, $http, $routeParams, $location)
 
         url += '?' + params.join('&');
         $location.url(url.toLowerCase());
+    };
+
+    var index = 0;
+
+    $scope.loadMore = function () {
+        var limit = Math.min(index + 20, $scope.allNodes.length);
+
+        $scope.nodes = $scope.nodes.concat(
+            $scope.allNodes.slice(index, limit)
+        );
+        index = limit;
     };
 
     if ($scope.where !== '') {
@@ -253,7 +266,8 @@ function updateNodes($scope, $http, box)
             });
         }
 
-        $scope.nodes = nodes;
+        $scope.allNodes = nodes;
+        $scope.loadMore();
         push($scope);
 
         $scope.searching = false;

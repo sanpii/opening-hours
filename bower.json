@@ -1,12 +1,13 @@
 {
     "name": "opening-hours",
     "dependencies": {
+        "leaflet": "~0.7",
         "bootstrap": "~4.0",
         "angular": "~1.5",
         "angular-route": "~1.5",
         "angular-resource": "~1.5",
-        "opening_hours": "https://github.com/ypid/opening_hours.js.git",
         "osmic": "https://github.com/gmgeo/osmic.git",
-        "leaflet": "~0.7"
+        "opening_hours": "https://github.com/ypid/opening_hours.js.git",
+        "ngInfiniteScroll": "https://github.com/sroze/ngInfiniteScroll.git"
     }
 }

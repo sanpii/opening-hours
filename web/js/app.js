@@ -1,6 +1,6 @@
 'use strict';
 
-var app = angular.module('opening-hours', ['ngRoute', 'ngResource']);
+var app = angular.module('opening-hours', ['ngRoute', 'ngResource', 'infinite-scroll']);
 
 app.config(['$routeProvider', function($routeProvider) {
     $routeProvider.when('/about', {

@@ -24,13 +24,17 @@
 
 <div class="alert alert-danger" ng-show="error">{{ error }}</div>
 
-<div class="alert alert-warning" ng-show="where && nodes.length === 0">Aucun résultat.</div>
+<div class="alert alert-warning" ng-show="!searching && where && nodes.length === 0">Aucun résultat.</div>
 
 <progress class="progress" value="{{ progress }}" max="100" ng-show="searching">{{ progress }}%</progress>
 
 <div id="map" ng-show="nodes.length > 0"></div>
 
-<ul ng-show="nodes.length > 0">
+<div ng-show="nodes.length > 0">
+    {{ nodes.length }} résultats sur {{ allNodes.length }}
+</div>
+
+<ul ng-show="nodes.length > 0" infinite-scroll="loadMore()">
     <li
         ng-repeat="node in nodes"
         class="{{ node.state }}"
