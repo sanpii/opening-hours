@@ -17,12 +17,12 @@ form {
     margin-bottom: 20px;
 }
 
-ul {
+ul#list {
     list-style: none outside none;
     padding-left: 0;
 }
 
-li {
+#list li {
     padding: 10px 10px;
     margin: 10px 0;
     border-radius: 4px;
@@ -33,11 +33,11 @@ li {
     text-overflow: ellipsis;
 }
 
-li.closed {
+#list li.closed {
     background-color: rgb(242, 222, 222);
 }
 
-li.open {
+#list li.open {
     background-color: rgb(222, 242, 222);
 }
 

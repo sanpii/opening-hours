@@ -34,7 +34,7 @@
     {{ nodes.length }} résultats sur {{ allNodes.length }}
 </div>
 
-<ul ng-show="nodes.length > 0" infinite-scroll="loadMore()">
+<ul id="list" ng-show="nodes.length > 0" infinite-scroll="loadMore()">
     <li
         ng-repeat="node in nodes"
         class="{{ node.state }}"

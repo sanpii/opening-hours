@@ -33,13 +33,16 @@
     </head>
     <body class="container">
         <header>
-            <h3 class="text-muted">Horaires</h3>
+            <nav class="navbar">
+                <a class="navbar-brand" href="/">Horaires</a>
+                <ul class="nav navbar-nav pull-right">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/#about">À propos</a>
+                    </li>
+                </ul>
+            </nav>
         </header>
 
         <div ng-view></div>
-
-        <footer>
-            <a href="/#about">À propos</a>
-        </footer>
-</body>
+    </body>
 </html>
