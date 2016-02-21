@@ -220,41 +220,51 @@ function search($scope, $http)
 
 function updateNodes($scope, $http, box)
 {
-    var request = '[out:json][timeout:25]; (node';
+    var filter = '';
 
     if (!$scope.wo_hour) {
-        request += '["opening_hours"]';
+        filter += '["opening_hours"]';
     }
 
     if ($scope.type !== 'all') {
-        request += '["amenity"="' + $scope.type + '"]';
+        filter += '["amenity"="' + $scope.type + '"]';
     }
 
     if ($scope.what !== '') {
-        request += '["name"~".*' + $scope.what + '.*", i]';
+        filter += '["name"~".*' + $scope.what + '.*", i]';
     }
 
-    request += '(' + box.join() + ');); out+body;';
+    filter += '(' + box.join() + ');';
+
+    var request = '[out:json][timeout:25]; (way' + filter + ' >; node' + filter + '); out+body;';
 
     push($scope);
     $http({
         url: 'https://overpass-api.de/api/interpreter?data=' + request
     }).then(function success(response) {
         var nodes = [];
+        var elements = response.data.elements;
 
-        if (response.data.elements.length !== 0) {
-            response.data.elements.forEach(function (node) {
+        if (elements.length !== 0) {
+            elements.forEach(function (node) {
                 if (
                     typeof node.tags === 'undefined'
-                        || (
-                            typeof node.tags.name === 'undefined'
-                            && typeof node.tags.amenity === 'undefined'
-                        )
+                    || (
+                        typeof node.tags.name === 'undefined'
+                        && typeof node.tags.amenity === 'undefined'
+                    )
                 ) {
                     return;
                 }
 
+                if (node.type === 'way') {
+                    replaceRefByNode(node, elements);
+                    node.lat = node.nodes[0][0];
+                    node.lon = node.nodes[0][1];
+                }
+
                 nodes.push({
+                    nodes: node.nodes,
                     lat: node.lat,
                     lon: node.lon,
                     name: typeof node.tags.name !== 'undefined' ? node.tags.name : node.tags.amenity,
@@ -280,14 +290,23 @@ function updateNodes($scope, $http, box)
 function updateMap(map, box, nodes)
 {
     nodes.forEach(function (node) {
-        L.circle([node.lat, node.lon], 5, {
-            color: node.state == 'open' ? 'green' : node.state == 'closed' ? 'red' : 'black',
-        }).addTo(map).bindPopup('<div>' +
+        var popup = '<div>' +
             '<span class="' + node.icon + '"></span>' +
             node.name +
             '</div>' +
-            '<div>' + node.opening_hours + '</div>'
-        );
+            '<div>' + node.opening_hours + '</div>';
+
+        var color = node.state == 'open' ? 'green' : node.state == 'closed' ? 'red' : 'black';
+
+        if (typeof node.nodes !== 'undefined') {
+            L.polygon(node.nodes, {color: color})
+                .addTo(map).bindPopup(popup);
+        }
+        else {
+            L.circle([node.lat, node.lon], 5, {color: color})
+                .addTo(map).bindPopup(popup);
+        }
+
     });
 
     setTimeout(function () {
@@ -339,6 +358,21 @@ function getIcon(node)
     }
 
     return icon;
+}
+
+function replaceRefByNode(node, elements)
+{
+    for (var i = 0; i < node.nodes.length; i++) {
+        for (var j = 0; j < elements.length; j++) {
+            if (elements[j].id === node.nodes[i]) {
+                node.nodes[i] = [
+                    elements[j].lat,
+                    elements[j].lon,
+                ];
+                break;
+            }
+        }
+    }
 }
 
 function push($scope)
