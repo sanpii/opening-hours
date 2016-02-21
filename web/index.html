@@ -16,7 +16,6 @@
         <script src="lib/angular/angular.min.js"></script>
         <script src="lib/angular-route/angular-route.min.js"></script>
         <script src="lib/angular-resource/angular-resource.min.js"></script>
-        <script src="lib/ngInfiniteScroll/build/ng-infinite-scroll.min.js"></script>
         <script src="lib/opening_hours/opening_hours.js"></script>
         <script src="lib/leaflet/dist/leaflet.js"></script>
 
@@ -35,14 +34,13 @@
         <header>
             <nav class="navbar">
                 <a class="navbar-brand" href="/">Horaires</a>
-                <ul class="nav navbar-nav pull-xs-right">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#about">À propos</a>
-                    </li>
-                </ul>
             </nav>
         </header>
 
         <div ng-view></div>
+
+        <footer>
+            <a href="#about">À propos</a>
+        </footer>
     </body>
 </html>

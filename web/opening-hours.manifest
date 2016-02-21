@@ -1,6 +1,6 @@
 CACHE MANIFEST
 
-# v6
+# v7
 
 CACHE:
 css/main.css
@@ -20,7 +20,6 @@ lib/angular-route/angular-route.min.js
 lib/bootstrap/dist/css/bootstrap.min.css
 lib/leaflet/dist/leaflet.css
 lib/leaflet/dist/leaflet.js
-lib/ngInfiniteScroll/build/ng-infinite-scroll.min.js
 lib/opening_hours/opening_hours.js
 lib/osmic/font/osmic.css
 lib/osmic/font/osmic.eot

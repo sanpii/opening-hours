@@ -34,7 +34,7 @@
     {{ nodes.length }} résultats sur {{ allNodes.length }}
 </div>
 
-<ul id="list" ng-show="nodes.length > 0" infinite-scroll="loadMore()">
+<ul id="list" ng-show="nodes.length > 0">
     <li
         ng-repeat="node in nodes"
         class="{{ node.state }}"
@@ -46,3 +46,7 @@
         <div>{{ node.opening_hours }}</div>
     </li>
 </ul>
+
+<div ng-show="nodes.length > 0 && nodes.length < allNodes.length">
+    <button ng-click="loadMore();" class="btn btn-primary center-block">Load more</button>
+</div>

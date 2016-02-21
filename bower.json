@@ -7,7 +7,6 @@
         "angular-route": "~1.5",
         "angular-resource": "~1.5",
         "osmic": "https://github.com/gmgeo/osmic.git",
-        "opening_hours": "https://github.com/ypid/opening_hours.js.git",
-        "ngInfiniteScroll": "https://github.com/sroze/ngInfiniteScroll.git"
+        "opening_hours": "https://github.com/ypid/opening_hours.js.git"
     }
 }
