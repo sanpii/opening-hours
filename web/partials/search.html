@@ -44,6 +44,12 @@
             {{ node.name }}
         </div>
         <div>{{ node.opening_hours }}</div>
+        <div ng-if="node.phone">
+            <a href="tel:{{ node.phone }}">
+                <span class="oc-telephone"></span>
+                {{ node.phone }}
+            </a>
+        </div>
     </li>
 </ul>
 

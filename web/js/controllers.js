@@ -270,6 +270,7 @@ function updateNodes($scope, $http, box)
                     name: typeof node.tags.name !== 'undefined' ? node.tags.name : node.tags.amenity,
                     amenity: node.tags.amenity,
                     opening_hours: node.tags.opening_hours,
+                    phone: node.tags.phone,
                     state: getState(node),
                     icon: getIcon(node),
                 });
