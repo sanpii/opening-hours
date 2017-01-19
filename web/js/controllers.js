@@ -205,13 +205,19 @@ function search($scope, $http)
     }).then(function success(response) {
         var location = response.data[0];
 
-        $scope.box = [
-            location.boundingbox[0],
-            location.boundingbox[2],
-            location.boundingbox[1],
-            location.boundingbox[3],
-        ];
-        push($scope);
+        if (typeof location !== 'undefined') {
+            $scope.box = [
+                location.boundingbox[0],
+                location.boundingbox[2],
+                location.boundingbox[1],
+                location.boundingbox[3],
+            ];
+            push($scope);
+        }
+        else {
+            $scope.error = 'Impossible de trouver "' + $scope.where + '"';
+            $scope.searching = false;
+        }
     }, function error(response) {
         $scope.error = response.data;
         $scope.searching = false;

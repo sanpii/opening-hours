@@ -24,7 +24,7 @@
 
 <div class="alert alert-danger" ng-show="error">{{ error }}</div>
 
-<div class="alert alert-warning" ng-show="!searching && where && nodes.length === 0">Aucun résultat.</div>
+<div class="alert alert-warning" ng-show="!searching && !error && where && nodes.length === 0">Aucun résultat.</div>
 
 <div class="progress">
     <div class="progress-bar" style="width: {{ progress }}%" ng-show="searching"></div>
