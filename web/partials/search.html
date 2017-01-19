@@ -26,7 +26,9 @@
 
 <div class="alert alert-warning" ng-show="!searching && where && nodes.length === 0">Aucun résultat.</div>
 
-<progress class="progress" value="{{ progress }}" max="100" ng-show="searching">{{ progress }}%</progress>
+<div class="progress">
+    <div class="progress-bar" style="width: {{ progress }}%" ng-show="searching"></div>
+</div>
 
 <div id="map" ng-show="nodes.length > 0"></div>
 
