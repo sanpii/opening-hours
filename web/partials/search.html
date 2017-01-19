@@ -50,6 +50,12 @@
                 {{ node.phone }}
             </a>
         </div>
+        <div>
+            <a href="geo:{{ node.lat }},{{ node.lon }}">
+                <span class="oc-guidepost"></span>
+                {{ node.lat }}, {{ node.lon }}
+            </a>
+        </div>
     </li>
 </ul>
 

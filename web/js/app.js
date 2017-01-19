@@ -12,3 +12,7 @@ app.config(['$routeProvider', function($routeProvider) {
         controller: SearchController
     });
 }]);
+
+app.config(['$compileProvider', function($compileProvider) {
+    $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|tel|file|geo):/);
+}]);
