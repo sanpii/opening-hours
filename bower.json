@@ -1,12 +1,12 @@
 {
     "name": "opening-hours",
     "dependencies": {
-        "leaflet": "~0.7",
-        "bootstrap": "v4.0.0-alpha.2",
-        "angular": "~1.5",
-        "angular-route": "~1.5",
-        "angular-resource": "~1.5",
+        "leaflet": "^0.7",
+        "bootstrap": "^v4.0.0-alpha.6",
+        "angular": "^1.5",
+        "angular-route": "^1.5",
+        "angular-resource": "^1.5",
         "osmic": "https://github.com/gmgeo/osmic.git",
-        "opening_hours": "https://github.com/ypid/opening_hours.js.git"
+        "opening_hours": "https://github.com/ypid/opening_hours.js.git#^3.4"
     }
 }
