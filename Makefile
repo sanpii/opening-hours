@@ -1,15 +1,33 @@
-start=$(shell grep -n 'CACHE:' web/opening-hours.manifest  | cut -d: -f1)
-end=$(shell grep -n 'NETWORK:' web/opening-hours.manifest  | cut -d: -f1)
-files=$(shell head -$(shell expr $(end) - 1) web/opening-hours.manifest | tail -$(shell expr $(end) - $(start) - 1) | sed 's%^%web/%')
-sources=web/manifest.webapp web/opening-hours.manifest $(files)
+BOWER_FLAGS=
+COMPOSER_FLAGS=--no-interaction
 
-all: opening-hours.zip opening-hours.apk
+ifeq ($(APP_ENVIRONMENT),prod)
+	BOWER_FLAGS+=--production
+	COMPOSER_FLAGS+=--prefer-dist --no-dev --classmap-authoritative
+endif
 
-opening-hours.zip: $(sources)
-	cd web && zip ../$@ $(shell echo $^ | sed 's%web/%%g')
+TASKS=
+ifneq ("$(wildcard composer.json)","")
+	TASKS+=vendor
+endif
 
-opening-hours.apk: opening-hours.zip
-	./node_modules/.bin/mozilla-apk-cli $^ $@
+ifneq ("$(wildcard bower.json)","")
+	TASKS+=assets
+endif
 
-clean:
-	rm -f opening-hours.zip opening-hours.apk
+all: $(TASKS)
+
+vendor: composer.lock
+
+composer.lock: composer.json
+	composer install $(COMPOSER_FLAGS)
+
+assets: web/lib
+
+web/lib: bower.json
+	bower install $(BOWER_FLAGS)
+
+distclean:
+	rm -rf vendor composer.lock web/lib
+
+.PHONY: all assets distclean
