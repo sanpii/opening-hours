@@ -1,7 +1,7 @@
 {
     "name": "opening-hours",
     "dependencies": {
-        "leaflet": "^0.7",
+        "leaflet": "^1.1",
         "bootstrap": "^v4.0.0-alpha.6",
         "angular": "^1.5",
         "angular-route": "^1.5",
