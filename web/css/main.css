@@ -51,3 +51,7 @@ ul#list {
 .help:hover .tooltips {
     display: inline;
 }
+
+.diet {
+    color: green;
+}

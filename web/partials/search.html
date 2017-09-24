@@ -44,6 +44,10 @@
         <div>
             <span class="{{ node.icon }}"></span>
             {{ node.name }}
+            <span class="diet">
+                <span ng-if="node.vegan" class="float-right" title="Végétalien">+</span>
+                <span ng-if="node.vegetarian || node.vegan" class="float-right" title="Végétarien">V</span>
+            </span>
         </div>
         <div>{{ node.opening_hours }}</div>
         <div ng-if="node.phone">

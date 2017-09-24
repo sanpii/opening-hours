@@ -279,6 +279,8 @@ function updateNodes($scope, $http, box)
                     phone: node.tags.phone,
                     state: getState(node),
                     icon: getIcon(node),
+                    vegetarian: typeof node.tags['diet:vegetarian'] !== 'undefined' && node.tags['diet:vegetarian'] === 'yes',
+                    vegan: typeof node.tags['diet:vegan'] !== 'undefined' && node.tags['diet:vegan'] === 'yes',
                 });
             });
         }
