@@ -1,6 +1,6 @@
 'use strict';
 
-function SearchController($scope, $http, $routeParams, $location)
+function SearchController($scope, $http, $routeParams, $location, localStorageService)
 {
     if (typeof $routeParams.where === 'undefined') {
         $scope.where = '';
@@ -88,7 +88,7 @@ function SearchController($scope, $http, $routeParams, $location)
 
     $scope.$watch('box', function (newValue, oldValue) {
         if (typeof newValue !== 'undefined') {
-            updateNodes($scope, $http, newValue);
+            updateNodes($scope, $http, newValue, localStorageService);
         }
     });
 
@@ -97,8 +97,27 @@ function SearchController($scope, $http, $routeParams, $location)
             updateMap($scope.map, $scope.box, newValue);
         }
     });
+
+    $scope.favorite = function (node) {
+        var favorites = localStorageService.get('favorites');
+
+        if (favorites === null) {
+            favorites = {};
+        }
+
+        if (favorites[node.id] === undefined) {
+            favorites[node.id] = true;
+            node.favorite = true;
+        }
+        else {
+            delete favorites[node.id];
+            node.favorite = false;
+        }
+
+        localStorageService.set('favorites', favorites);
+    };
 }
-SearchController.$inject = ['$scope', '$http', '$routeParams', '$location'];
+SearchController.$inject = ['$scope', '$http', '$routeParams', '$location', 'localStorageService'];
 
 function initMap($scope)
 {
@@ -246,7 +265,7 @@ function search($scope, $http)
     });
 }
 
-function updateNodes($scope, $http, box)
+function updateNodes($scope, $http, box, localStorageService)
 {
     var filter = '';
 
@@ -300,6 +319,7 @@ function updateNodes($scope, $http, box)
                 }
 
                 nodes.push({
+                    id: node.id,
                     nodes: node.nodes,
                     lat: node.lat,
                     lon: node.lon,
@@ -311,9 +331,22 @@ function updateNodes($scope, $http, box)
                     icon: getIcon(node),
                     vegetarian: typeof node.tags['diet:vegetarian'] !== 'undefined' && node.tags['diet:vegetarian'] === 'yes',
                     vegan: typeof node.tags['diet:vegan'] !== 'undefined' && node.tags['diet:vegan'] === 'yes',
+                    favorite: is_favorite(localStorageService, node),
                 });
             });
         }
+
+        nodes.sort(function (a, b) {
+            if (a.favorite && !b.favorite) {
+                return -1;
+            }
+            else if (!a.favorite && b.favorite) {
+                return 1;
+            }
+            else {
+                return a.name.localeCompare(b.name);
+            }
+        });
 
         $scope.allNodes = nodes;
         $scope.loadMore();
@@ -417,4 +450,15 @@ function replaceRefByNode(node, elements)
 function push($scope)
 {
     $scope.progress += 25;
+}
+
+function is_favorite(localStorageService, node)
+{
+    var favorites = localStorageService.get('favorites');
+
+    if (favorites === null) {
+        return false;
+    }
+
+    return favorites[node.id];
 }

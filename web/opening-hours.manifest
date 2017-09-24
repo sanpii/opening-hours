@@ -1,6 +1,6 @@
 CACHE MANIFEST
 
-# v9
+# v10
 
 CACHE:
 css/main.css
@@ -10,6 +10,8 @@ img/icon-64.png
 img/icon-128.png
 img/icon-256.png
 img/icon-512.png
+img/star.png
+img/empty-star.png
 js/app.js
 js/config/current.js
 js/controllers.js

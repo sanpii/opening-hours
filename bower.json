@@ -6,6 +6,7 @@
         "angular": "^1.5",
         "angular-route": "^1.5",
         "angular-resource": "^1.5",
+        "angular-local-storage": "^0.7",
         "osmic": "https://github.com/gmgeo/osmic.git",
         "opening_hours": "https://github.com/ypid/opening_hours.js.git#^3.4"
     }
