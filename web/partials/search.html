@@ -17,6 +17,12 @@
         <label>
             <input type="checkbox" ng-model="wo_hour" /> Sans horaire
         </label>
+        <label ng-show="type == 'restaurant'">
+            <input type="checkbox" ng-model="vegetarian" /> Végétarien
+        </label>
+        <label ng-show="type == 'restaurant'">
+            <input type="checkbox" ng-model="vegan" /> Vegan
+        </label>
     </div>
 
     <button ng-click="search();" class="btn btn-primary">Rechercher</button>

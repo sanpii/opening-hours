@@ -30,6 +30,20 @@ function SearchController($scope, $http, $routeParams, $location)
         $scope.wo_hour = $routeParams.wo_hour;
     }
 
+    if (typeof $routeParams.vegetarian === 'undefined') {
+        $scope.vegetarian = false;
+    }
+    else {
+        $scope.vegetarian = $routeParams.vegetarian;
+    }
+
+    if (typeof $routeParams.vegan === 'undefined') {
+        $scope.vegan = false;
+    }
+    else {
+        $scope.vegan = $routeParams.vegan;
+    }
+
     initMap($scope);
     initType($scope, $http);
     $scope.nodes = [];
@@ -43,6 +57,14 @@ function SearchController($scope, $http, $routeParams, $location)
 
         if ($scope.wo_hour) {
             params.push('wo_hour');
+        }
+
+        if ($scope.vegetarian) {
+            params.push('vegetarian');
+        }
+
+        if ($scope.vegan) {
+            params.push('vegan');
         }
 
         url += '?' + params.join('&');
@@ -230,6 +252,14 @@ function updateNodes($scope, $http, box)
 
     if (!$scope.wo_hour) {
         filter += '["opening_hours"]';
+    }
+
+    if ($scope.vegetarian) {
+        filter += '["diet:vegetarian"="yes"]';
+    }
+
+    if ($scope.vegan) {
+        filter += '["diet:vegan"="yes"]';
     }
 
     if ($scope.type !== 'all') {
