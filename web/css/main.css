@@ -62,4 +62,10 @@ ul#list {
 
 .favorite img {
     vertical-align: baseline;
+    max-height: 32px;
+}
+
+.wifi img {
+    vertical-align: baseline;
+    max-height: 32px;
 }

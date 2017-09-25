@@ -17,6 +17,9 @@
         <label>
             <input type="checkbox" ng-model="wo_hour" /> Sans horaire
         </label>
+        <label>
+            <input type="checkbox" ng-model="wifi" /> Avec wifi
+        </label>
         <label ng-show="type == 'restaurant'">
             <input type="checkbox" ng-model="vegetarian" /> Végétarien
         </label>
@@ -53,6 +56,9 @@
             <span class="favorite float-right" ng-click="favorite(node)">
                 <img src="img/star.png" ng-if="node.favorite" alt="Favorite" />
                 <img src="img/empty-star.png" ng-if="!node.favorite" />
+            </span>
+            <span class="wifi float-right" ng-if="node.wifi">
+                <img src="img/wifi.png" alt="Wifi" />
             </span>
             <span class="diet">
                 <span ng-if="node.vegan" class="float-right" title="Végétalien">+</span>

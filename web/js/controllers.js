@@ -30,6 +30,13 @@ function SearchController($scope, $http, $routeParams, $location, localStorageSe
         $scope.wo_hour = $routeParams.wo_hour;
     }
 
+    if (typeof $routeParams.wifi === 'undefined') {
+        $scope.wifi = false;
+    }
+    else {
+        $scope.wifi = $routeParams.wifi;
+    }
+
     if (typeof $routeParams.vegetarian === 'undefined') {
         $scope.vegetarian = false;
     }
@@ -57,6 +64,10 @@ function SearchController($scope, $http, $routeParams, $location, localStorageSe
 
         if ($scope.wo_hour) {
             params.push('wo_hour');
+        }
+
+        if ($scope.wifi) {
+            params.push('wifi');
         }
 
         if ($scope.vegetarian) {
@@ -273,6 +284,10 @@ function updateNodes($scope, $http, box, localStorageService)
         filter += '["opening_hours"]';
     }
 
+    if ($scope.wifi) {
+        filter += '["internet_access"="wlan"]';
+    }
+
     if ($scope.vegetarian) {
         filter += '["diet:vegetarian"="yes"]';
     }
@@ -329,8 +344,9 @@ function updateNodes($scope, $http, box, localStorageService)
                     phone: node.tags.phone,
                     state: getState(node),
                     icon: getIcon(node),
-                    vegetarian: typeof node.tags['diet:vegetarian'] !== 'undefined' && node.tags['diet:vegetarian'] === 'yes',
-                    vegan: typeof node.tags['diet:vegan'] !== 'undefined' && node.tags['diet:vegan'] === 'yes',
+                    vegetarian: node.tags['diet:vegetarian'] === 'yes',
+                    vegan: node.tags['diet:vegan'] === 'yes',
+                    wifi: node.tags['internet_access'] === 'wlan',
                     favorite: is_favorite(localStorageService, node),
                 });
             });

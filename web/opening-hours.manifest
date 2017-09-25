@@ -1,17 +1,18 @@
 CACHE MANIFEST
 
-# v10
+# v11
 
 CACHE:
 css/main.css
 index.html
+img/empty-star.png
 img/icon-32.png
 img/icon-64.png
 img/icon-128.png
 img/icon-256.png
 img/icon-512.png
 img/star.png
-img/empty-star.png
+img/wifi.png
 js/app.js
 js/config/current.js
 js/controllers.js
