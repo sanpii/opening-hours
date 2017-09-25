@@ -4,8 +4,9 @@
     </fieldset>
 
     <fieldset class="form-group">
-        <select class="form-control" ng-model="type" ng-options="type for type in types track by type">
-            <option value="">Quoi ?</option>
+        <select class="form-control" ng-model="type">
+            <option value="all">Quoi ?</option>
+            <option ng-repeat="type in types" value="type">{{ type }}</option>
         </select>
     </fieldset>
 
