@@ -54,11 +54,11 @@
             <span class="{{ node.icon }}"></span>
             {{ node.name }}
             <span class="favorite float-right" ng-click="favorite(node)">
-                <img src="img/star.png" ng-if="node.favorite" alt="Favorite" />
-                <img src="img/empty-star.png" ng-if="!node.favorite" />
+                <img src="img/star.png" ng-if="node.favorite" title="Supprimer des favoris" />
+                <img src="img/empty-star.png" ng-if="!node.favorite" title="Ajouter au favoris" />
             </span>
             <span class="wifi float-right" ng-if="node.wifi">
-                <img src="img/wifi.png" alt="Wifi" />
+                <img src="img/wifi.png" title="Wifi disponible" />
             </span>
             <span class="diet">
                 <span ng-if="node.vegan" class="float-right" title="Végétalien">+</span>
