@@ -1,6 +1,6 @@
 'use strict';
 
-var app = angular.module('opening-hours', ['ngRoute', 'ngResource', 'LocalStorageModule']);
+var app = angular.module('opening-hours', ['ngRoute', 'ngResource', 'LocalStorageModule', 'ngSanitize']);
 
 app.config(['$routeProvider', function($routeProvider) {
     $routeProvider.when('/about', {

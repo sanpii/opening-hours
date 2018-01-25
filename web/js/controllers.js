@@ -1,6 +1,6 @@
 'use strict';
 
-function SearchController($scope, $http, $routeParams, $location, localStorageService)
+function SearchController($scope, $http, $routeParams, $location, localStorageService, $sce)
 {
     if (typeof $routeParams.where === 'undefined') {
         $scope.where = '';
@@ -57,6 +57,10 @@ function SearchController($scope, $http, $routeParams, $location, localStorageSe
     $scope.allNodes = [];
     $scope.progress = 0;
     $scope.searching = false;
+
+    $scope.timeline = function(node) {
+        return $sce.trustAsHtml(timeline(node));
+    };
 
     $scope.search = function () {
         var url = '/' + $scope.where + '/' + $scope.type + '/' + $scope.what;
@@ -128,7 +132,7 @@ function SearchController($scope, $http, $routeParams, $location, localStorageSe
         localStorageService.set('favorites', favorites);
     };
 }
-SearchController.$inject = ['$scope', '$http', '$routeParams', '$location', 'localStorageService'];
+SearchController.$inject = ['$scope', '$http', '$routeParams', '$location', 'localStorageService', '$sce'];
 
 function initMap($scope)
 {
@@ -340,7 +344,6 @@ function updateNodes($scope, $http, box, localStorageService)
                     lon: node.lon,
                     name: typeof node.tags.name !== 'undefined' ? node.tags.name : node.tags.amenity,
                     amenity: node.tags.amenity,
-                    opening_hours: node.tags.opening_hours,
                     phone: node.tags.phone,
                     state: getState(node),
                     icon: getIcon(node),
@@ -348,6 +351,7 @@ function updateNodes($scope, $http, box, localStorageService)
                     vegan: node.tags['diet:vegan'] === 'yes',
                     wifi: node.tags['internet_access'] === 'wlan',
                     favorite: is_favorite(localStorageService, node),
+                    tags: node.tags,
                 });
             });
         }
@@ -427,6 +431,150 @@ function getState(node)
     }
 
     return state;
+}
+
+function timeline(node)
+{
+    var content = '';
+    var now = new Date();
+    var it = getOpening(node);
+    var date = it.getDate();
+    var days = [
+        'Lundi',
+        'Mardi',
+        'Mercredi',
+        'Jeudi',
+        'Vendredi',
+        'Samedi',
+        'Dimanche',
+    ];
+
+    content += `
+<div class="container legend">
+    <div class="row">
+        <span class="day col-lg-1"></span>
+
+        <div class="col">`;
+
+    for (var i = 0; i < 24; i++) {
+        var classes = [];
+
+        if (i % 5 !== 0) {
+            classes.push('label');
+        }
+
+        if (i === now.getHours()) {
+            classes.push('font-weight-bold');
+        }
+        else {
+            classes.push('text-muted');
+        }
+
+        content += `<span class="${classes.join(' ')}">${formatNumber(i)}</span>`;
+    }
+
+    content += `</div>
+    </div>
+</div>`;
+
+    for (var i = 0; i < 7; i++) {
+        var classes = ['day', 'col-lg-1'];
+
+        it.setDate(date)
+
+        if (i === now.getDay()) {
+            classes.push('font-weight-bold');
+        }
+        else {
+            classes.push('text-muted');
+        }
+
+        content += `
+<div class="container">
+    <div class="row">
+        <span class="${classes.join(' ')}">
+            ${days[i][0]}<span class="label">${days[i].substring(1)}</span>
+        </span>
+        <div class="col">
+            <div class="progress">`;
+
+        var is_open = it.getState();
+        var curdate = date;
+        var prevdate = date;
+
+        while (it.advance() && curdate.getTime() - date.getTime() < 24 * 60 * 60 * 1000) {
+            curdate = it.getDate();
+
+            var from = prevdate.getTime() - date.getTime();
+            var to = curdate.getTime() - date.getTime();
+
+            if (to > 24 * 60 * 60 * 1000) {
+                to = 24 * 60 * 60 * 1000;
+            }
+
+            from *= 100 / 1000 / 60 / 60 / 24;
+            to *= 100 / 1000 / 60 / 60 / 24;
+
+            var size = to - from;
+            var color = is_open ? "bg-success" : "bg-danger";
+            var legend = (is_open) ? formatTime(prevdate) + ' - ' + formatTime(curdate) : '';
+            content += `<div
+                role="progressbar"
+                style="width: ${size}%;"
+                aria-valuenow="${size}"
+                aria-valuemin="0"
+                aria-valuemax="100"
+                class="progress-bar ${color}"
+                title="${legend}"
+            ><span class="${size < 11 ? 'd-lg-none' : ''}">${legend}</span></div>`;
+
+            prevdate = curdate;
+            is_open = it.getState();
+        }
+
+        content += `
+            </div>
+        </div>
+    </div>
+</div>`;
+
+        date.setDate(date.getDate() + 1);
+    }
+
+    return content;
+}
+
+function formatTime(date)
+{
+    return formatNumber(date.getHours()) + ':' + formatNumber(date.getMinutes());
+}
+
+function formatNumber(n)
+{
+    return (n < 10 ? '0' : '') + n;
+}
+
+function getOpening(node)
+{
+    var opening  = new opening_hours(node.tags.opening_hours, {
+        lat: location.lat,
+        lon: location.lon,
+        address: {
+            country_code: 'fr',
+        },
+    });
+
+    var today = new Date();
+    return opening.getIterator(today.beginOfWeek());
+}
+
+Date.prototype.beginOfWeek = function () {
+    return new Date(
+        this.getFullYear(),
+        this.getMonth(),
+        this.getDate() - 7 + this.getDay(),
+        0, 0, 0
+    );
 }
 
 function getIcon(node)

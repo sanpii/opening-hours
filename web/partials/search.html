@@ -66,18 +66,22 @@
                 <span ng-if="node.vegetarian || node.vegan" class="float-right" title="Végétarien">V</span>
             </span>
         </div>
-        <div>{{ node.opening_hours }}</div>
-        <div ng-if="node.phone">
-            <a href="tel:{{ node.phone }}">
-                <span class="oc-telephone"></span>
-                {{ node.phone }}
-            </a>
-        </div>
-        <div>
-            <a href="geo:{{ node.lat }},{{ node.lon }}">
-                <span class="oc-guidepost"></span>
-                {{ node.lat }}, {{ node.lon }}
-            </a>
+        <div class="detail">
+            <div ng-bind-html="timeline(node)" class="timeline"></div>
+            <div>
+                <div ng-if="node.phone">
+                    <a href="tel:{{ node.phone }}">
+                        <span class="oc-telephone"></span>
+                        <span class="label">{{ node.phone }}</span>
+                    </a>
+                </div>
+                <div>
+                    <a href="geo:{{ node.lat }},{{ node.lon }}">
+                        <span class="oc-guidepost"></span>
+                        <span class="label">{{ node.lat }}, {{ node.lon }}</span>
+                    </a>
+                </div>
+            </div>
         </div>
     </li>
 </ul>

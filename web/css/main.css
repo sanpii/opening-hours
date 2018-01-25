@@ -41,6 +41,55 @@ ul#list {
     background-color: rgb(222, 242, 222);
 }
 
+#list .detail {
+    display: flex;
+    width: 100%;
+}
+
+#list .detail .timeline {
+    flex-grow: 1;
+}
+
+#list .detail .timeline .row {
+    align-items: center;
+}
+
+#list .detail .timeline .day {
+    font-size: 1rem;
+    margin-right: 1rem;
+}
+
+#list .detail .timeline .legend .col {
+    display: flex;
+}
+
+#list .detail .timeline .legend .col span {
+    border-left: 1px solid rgba(0, 0, 0, 0.15);
+    flex-grow: 1;
+    font-size: 1rem;
+}
+
+@media (max-width: 990px) {
+    #list .detail .label {
+        display: none;
+    }
+
+    #list .detail .timeline .day {
+        margin-right: 0;
+        padding: 0;
+        width: .1rem;
+    }
+
+    #list .detail .timeline .progress-bar {
+        overflow: visible;
+        white-space: nowrap;
+    }
+
+    #list .detail .timeline .progress-bar.bg-success {
+        z-index: 10;
+    }
+}
+
 .help .tooltips {
     display: none;
     position: absolute;
