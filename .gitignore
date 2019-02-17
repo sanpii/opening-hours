@@ -1,0 +1,4 @@
+/Cargo.lock
+/static/lib
+/target
+**/*.rs.bk

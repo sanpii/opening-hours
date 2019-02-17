@@ -1,0 +1,120 @@
+header {
+    border-bottom: 1px solid #E5E5E5;
+    margin-bottom: 20px;
+}
+
+footer {
+    border-top: 1px solid #E5E5E5;
+    margin-top: 20px;
+}
+
+form {
+    margin-bottom: 20px;
+}
+
+#map {
+    height: 280px;
+    margin-bottom: 20px;
+}
+
+ul#list {
+    list-style: none outside none;
+    padding-left: 0;
+}
+
+#list li {
+    padding: 10px 10px;
+    margin: 10px 0;
+    border-radius: 4px;
+    background-color: #F5F5F5;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    font-size: 1.5em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#list li.closed {
+    background-color: rgb(242, 222, 222);
+}
+
+#list li.open {
+    background-color: rgb(222, 242, 222);
+}
+
+#list .detail {
+    display: flex;
+    width: 100%;
+}
+
+#list .detail .timeline {
+    flex-grow: 1;
+}
+
+#list .detail .timeline .row {
+    align-items: center;
+}
+
+#list .detail .timeline .day {
+    font-size: 1rem;
+    margin-right: 1rem;
+}
+
+#list .detail .timeline .legend .col {
+    display: flex;
+}
+
+#list .detail .timeline .legend .col span {
+    border-left: 1px solid rgba(0, 0, 0, 0.15);
+    flex-grow: 1;
+    font-size: 1rem;
+}
+
+@media (max-width: 990px) {
+    #list .detail .label {
+        display: none;
+    }
+
+    #list .detail .timeline .day {
+        margin-right: 0;
+        padding: 0;
+        width: .1rem;
+    }
+
+    #list .detail .timeline .progress-bar {
+        overflow: visible;
+        white-space: nowrap;
+    }
+
+    #list .detail .timeline .progress-bar.bg-success {
+        z-index: 10;
+    }
+}
+
+.help .tooltips {
+    display: none;
+    position: absolute;
+    margin-top: -1em;
+    margin-left: 10px;
+}
+
+.help:hover .tooltips {
+    display: inline;
+}
+
+.diet {
+    color: green;
+}
+
+.favorite {
+    margin-left: 5px;
+}
+
+.favorite img {
+    vertical-align: baseline;
+    max-height: 32px;
+}
+
+.wifi img {
+    vertical-align: baseline;
+    max-height: 32px;
+}

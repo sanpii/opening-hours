@@ -1,0 +1,9 @@
+{
+    "name": "opening-hours",
+    "dependencies": {
+        "leaflet": "^1.3",
+        "bootstrap": "^4.0",
+        "osmic": "https://github.com/gmgeo/osmic.git",
+        "opening_hours.js": "^3.4"
+    }
+}
