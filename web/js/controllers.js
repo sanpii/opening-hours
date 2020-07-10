@@ -138,7 +138,7 @@ function initMap($scope)
 {
     $scope.map = L.map('map');
 
-    L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=' + mapbox_api_key, {
+    L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/{z}/{x}/{y}?access_token=' + mapbox_api_key, {
         maxZoom: 18,
         attribution: '',
         id: 'mapbox.streets'
