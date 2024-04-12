@@ -1,0 +1,29 @@
+on: [pull_request, push]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  lint_fmt:
+    name: cargo fmt
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt
+      - name: Check formating
+        run: cargo fmt -- --check
+
+  lint_clippy:
+    name: Clippy
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: clippy
+      - name: Run clippy
+        run: cargo clippy --all-features -- --deny warnings

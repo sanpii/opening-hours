@@ -1,5 +1,6 @@
-/*.zip
-/*.apk
-/node_modules
-/web/lib
-/web/js/config/current.js
+/Cargo.lock
+/dist
+/static/lib
+/target
+/yarn.lock
+**/*.rs.bk

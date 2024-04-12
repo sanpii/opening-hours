@@ -1,33 +1,30 @@
-BOWER_FLAGS=
-COMPOSER_FLAGS=--no-interaction
+YARN?=yarn
+YARN_FLAGS?=
+TRUNK?=trunk
+TRUNK_FLAGS?=
+
+.DEFAULT_GOAL := build
 
 ifeq ($(APP_ENVIRONMENT),prod)
-	BOWER_FLAGS+=--production
-	COMPOSER_FLAGS+=--prefer-dist --no-dev --classmap-authoritative
+	YARN_FLAGS+=--production
+	TRUNK_FLAGS+=--release
 endif
 
-TASKS=
-ifneq ("$(wildcard composer.json)","")
-	TASKS+=vendor
+ifneq (,$(wildcard ./.env))
+	include .env
+	export
 endif
 
-ifneq ("$(wildcard bower.json)","")
-	TASKS+=assets
-endif
+build: yarn
+	$(TRUNK) build $(TRUNK_FLAGS)
+.PHONY: build
 
-all: $(TASKS)
+yarn: yarn.lock
+.PHONY: yarn
 
-vendor: composer.lock
+yarn.lock: package.json
+	$(YARN) $(YARN_FLAGS) install
 
-composer.lock: composer.json
-	composer install $(COMPOSER_FLAGS)
-
-assets: web/lib
-
-web/lib: bower.json
-	bower install $(BOWER_FLAGS)
-
-distclean:
-	rm -rf vendor composer.lock web/lib
-
-.PHONY: all assets distclean
+serve: build
+	$(TRUNK) serve $(TRUNK_FLAGS)
+.PHONY: serve

@@ -1,0 +1,8 @@
+{
+    "name": "opening-hours",
+    "dependencies": {
+        "bootstrap": "^5.0",
+        "leaflet": "^1.9",
+        "@beyondtracks/osmic": "^1.0"
+    }
+}

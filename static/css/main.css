@@ -8,12 +8,11 @@ footer {
     margin-top: 20px;
 }
 
-form {
+form, #form {
     margin-bottom: 20px;
 }
 
-#map {
-    height: 280px;
+.leaflet-container {
     margin-bottom: 20px;
 }
 
