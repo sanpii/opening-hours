@@ -84,7 +84,7 @@ where
     O: Fn(bool) + 'static,
 {
     leptos::view! {
-        <div class="form-check form-check-inline">
+        <div class="form-check form-check-inline form-switch">
             <input
                 type="checkbox"
                 class="form-check-input"
