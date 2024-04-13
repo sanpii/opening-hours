@@ -26,14 +26,21 @@ where
             </div>
 
             <div class="input-group mb-3">
-                <select class="form-control" on:change=move |ev| {
+                <input
+                    type="text"
+                    value=move || param.get().r#type
+                    placeholder="Quoi ?"
+                    class="form-control"
+                    list="types"
+                    on:input=move |ev| {
                     param.update(|p| p.r#type = leptos::event_target_value(&ev));
-                }>
-                    <option value="all">Quoi ?</option>
+                }
+                />
+                <datalist id="types">
                     <leptos::For each=move || TYPES key=|value| value.to_string() let:ty>
-                        <option value=ty selected=move || param.get().r#type == ty>{ ty }</option>
+                        <option value=ty />
                     </leptos::For>
-                </select>
+                </datalist>
             </div>
 
             <div class="input-group mb-3">
