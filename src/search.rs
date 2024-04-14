@@ -67,6 +67,21 @@ pub(crate) fn Item(node: crate::state::Node) -> impl leptos::IntoView {
             <div class="detail">
                 <Timeline node=node />
                 <div>
+                    <leptos::Show when=move || node.get().website.is_some()>
+                        <div>
+                            <a href=move || node.get().website.unwrap()>
+                                <span class="oc-computer"></span>
+                                <span class="label">{ node.get().website.map(|mut x| {
+                                    if x.len() > 20 {
+                                        x.truncate(20);
+                                        x + "…"
+                                    } else {
+                                        x
+                                    }
+                                }) }</span>
+                            </a>
+                        </div>
+                    </leptos::Show>
                     <leptos::Show when=move || node.get().phone.is_some()>
                         <div>
                             <a href=move || format!("tel:{}", node.get().phone.unwrap())>

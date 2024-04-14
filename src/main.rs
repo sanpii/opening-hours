@@ -126,6 +126,13 @@ impl Element {
         Some(icon)
     }
 
+    pub fn website(&self) -> Option<String> {
+        self.tags
+            .get("website")
+            .or_else(|| self.tags.get("contact:website"))
+            .cloned()
+    }
+
     pub fn is_favorite(&self) -> bool {
         use gloo::storage::Storage;
 
