@@ -1,5 +1,40 @@
 use leptos::{SignalGet, SignalGetUntracked, SignalUpdate};
 
+#[derive(Clone, Debug, serde::Deserialize)]
+struct Taginfo {
+    //url: String,
+    //data_until: String,
+    //page: usize,
+    //rp: usize,
+    //total: usize,
+    data: Vec<Data>,
+}
+
+#[derive(Clone, Debug, serde::Deserialize)]
+struct Data {
+    value: String,
+    //count: usize,
+    //fraction: f32,
+    //in_wiki: bool,
+    //description: String,
+    //desclang: String,
+    //descdir: String,
+}
+
+impl Data {
+    pub fn icon(&self) -> Option<String> {
+        let amenity = &self.value;
+
+        let icon = if amenity == "bicycle_parking" {
+            "oc-parking-bicycle".to_string()
+        } else {
+            format!("oc-{}", amenity.replace('_', "-"))
+        };
+
+        Some(icon)
+    }
+}
+
 #[leptos::component]
 pub(crate) fn Form<F>(
     param: leptos::ReadSignal<crate::state::Param>,
@@ -8,7 +43,24 @@ pub(crate) fn Form<F>(
 where
     F: Fn(crate::state::Param) + 'static,
 {
+    use leptos::IntoView;
+
     let param = leptos::create_rw_signal(param.get_untracked());
+    let types = leptos::create_local_resource(
+        move || "",
+        |query| async move {
+            let url = format!("https://taginfo.openstreetmap.org/api/4/key/values?key=amenity&filter=all&lang=fr&sortname=count&sortorder=desc&rp=50&page=1&query={query}");
+            let mut taginfo = reqwest::get(&url)
+                .await
+                .unwrap()
+                .json::<Taginfo>()
+                .await
+                .unwrap();
+            taginfo.data.sort_by(|a, b| a.value.cmp(&b.value));
+
+            taginfo
+        },
+    );
 
     leptos::view! {
         <form>
@@ -37,9 +89,17 @@ where
                 }
                 />
                 <datalist id="types">
-                    <leptos::For each=move || TYPES key=|value| value.to_string() let:ty>
-                        <option value=ty />
-                    </leptos::For>
+                    {move || match types.get() {
+                        None => leptos::view! {}.into_view(),
+                        Some(types) => leptos::view! {
+                            <leptos::For each=move || types.data.clone() key=|ty| ty.value.clone() let:ty>
+                                <option value=ty.clone().value>
+                                    <span class=ty.icon().unwrap_or_default()></span>
+                                    { ty.value }
+                                </option>
+                            </leptos::For>
+                        }.into_view()
+                    }}
                 </datalist>
             </div>
 
@@ -102,106 +162,3 @@ where
         </div>
     }
 }
-
-static TYPES: [&str; 100] = [
-    "animal_boarding",
-    "animal_shelter",
-    "arts_centre",
-    "atm",
-    "baby_hatch",
-    "bank",
-    "bar",
-    "bbq",
-    "bench",
-    "bicycle parking",
-    "bicycle rental",
-    "bicycle_repair_station",
-    "biergarten",
-    "boat_sharing",
-    "brothel",
-    "bureau de change",
-    "bus_station",
-    "cafe",
-    "car rental",
-    "car sharing",
-    "car wash",
-    "casino",
-    "charging_station",
-    "cinema",
-    "clinic",
-    "clock",
-    "college",
-    "community_centre",
-    "courthouse",
-    "coworking_space",
-    "crematorium",
-    "crypt",
-    "dentist",
-    "doctors",
-    "dojo",
-    "drinking_water",
-    "embassy",
-    "ev_charging",
-    "fast food",
-    "ferry_terminal",
-    "firepit",
-    "fire_station",
-    "food court",
-    "fountain",
-    "fuel",
-    "gambling",
-    "game_feeding",
-    "grave_yard",
-    "grit_bin",
-    "gym",
-    "hospital",
-    "hunting_stand",
-    "ice_cream",
-    "kindergarten",
-    "kneipp_water_cure",
-    "library",
-    "marketplace",
-    "motorcycle parking",
-    "nightclub",
-    "nursing_home",
-    "parking",
-    "parking_entrance",
-    "parking_space",
-    "pharmacy",
-    "photo_booth",
-    "place of worship",
-    "planetarium",
-    "police",
-    "post_box",
-    "post_office",
-    "prison",
-    "pub",
-    "public_bookcase",
-    "public_building",
-    "ranger_station",
-    "recycling",
-    "register_office",
-    "rescue_station",
-    "restaurant",
-    "sauna",
-    "school",
-    "shelter",
-    "shower",
-    "social_centre",
-    "social_facility",
-    "stripclub",
-    "studio",
-    "swingerclub",
-    "taxi",
-    "telephone",
-    "theatre",
-    "toilets",
-    "townhall",
-    "university",
-    "vending_machine",
-    "veterinary",
-    "waste_basket",
-    "waste_disposal",
-    "watering_place",
-    "water_point",
-];
