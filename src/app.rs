@@ -69,13 +69,13 @@ pub(crate) fn Index() -> impl leptos::IntoView {
     let params = leptos_router::use_params_map();
     let query = leptos_router::use_query_map();
 
-    let param = leptos::create_rw_signal(crate::state::Param::from(
+    let param = leptos::create_rw_signal(crate::Param::from(
         &params.get_untracked(),
         &query.get_untracked(),
     ));
     let _ = leptos::watch(
         move || (params.get(), query.get()),
-        move |(params, query), _, _| param.set(crate::state::Param::from(params, query)),
+        move |(params, query), _, _| param.set(crate::Param::from(params, query)),
         false,
     );
 
@@ -119,7 +119,7 @@ pub(crate) fn Index() -> impl leptos::IntoView {
 }
 
 async fn do_search(
-    (param, state): (crate::state::Param, leptos::RwSignal<crate::State>),
+    (param, state): (crate::Param, leptos::RwSignal<crate::State>),
 ) -> leptos::error::Result<()> {
     if param.r#where.is_empty() {
         return Ok(());
@@ -168,7 +168,7 @@ async fn location(r#where: &str) -> leptos::error::Result<crate::Location> {
 }
 
 async fn update_nodes(
-    param: &crate::state::Param,
+    param: &crate::Param,
     r#box: &[String],
 ) -> leptos::error::Result<crate::Overpass> {
     let filter = param.as_filter(r#box);
@@ -180,8 +180,8 @@ async fn update_nodes(
 
     Ok(nodes)
 }
-fn transform_nodes(nodes: crate::Overpass) -> Vec<crate::state::Node> {
-    let mut nodes: Vec<crate::state::Node> = nodes.into();
+fn transform_nodes(nodes: crate::Overpass) -> Vec<crate::Node> {
+    let mut nodes: Vec<crate::Node> = nodes.into();
     nodes.sort();
 
     nodes

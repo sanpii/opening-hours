@@ -37,11 +37,11 @@ impl Data {
 
 #[leptos::component]
 pub(crate) fn Form<F>(
-    param: leptos::ReadSignal<crate::state::Param>,
+    param: leptos::ReadSignal<crate::Param>,
     on_search: F,
 ) -> impl leptos::IntoView
 where
-    F: Fn(crate::state::Param) + 'static,
+    F: Fn(crate::Param) + 'static,
 {
     use leptos::IntoView;
 

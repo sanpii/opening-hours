@@ -23,7 +23,7 @@ pub(crate) fn Search(state: leptos::ReadSignal<crate::State>) -> impl leptos::In
 }
 
 #[leptos::component]
-pub(crate) fn Item(node: crate::state::Node) -> impl leptos::IntoView {
+pub(crate) fn Item(node: crate::Node) -> impl leptos::IntoView {
     let (node, node_set) = leptos::create_signal(node);
 
     let class = move || match node.get().state {
@@ -103,7 +103,7 @@ pub(crate) fn Item(node: crate::state::Node) -> impl leptos::IntoView {
 }
 
 #[leptos::component]
-pub(crate) fn Timeline(node: leptos::ReadSignal<crate::state::Node>) -> impl leptos::IntoView {
+pub(crate) fn Timeline(node: leptos::ReadSignal<crate::Node>) -> impl leptos::IntoView {
     let now = chrono::Local::now().naive_local();
     let date = now - chrono::Duration::days(now.weekday() as i64);
 
@@ -134,7 +134,7 @@ pub(crate) fn Timeline(node: leptos::ReadSignal<crate::state::Node>) -> impl lep
 }
 
 #[leptos::component]
-pub(crate) fn Day(date: chrono::NaiveDate, node: crate::state::Node) -> impl leptos::IntoView {
+pub(crate) fn Day(date: chrono::NaiveDate, node: crate::Node) -> impl leptos::IntoView {
     static DOW: [&str; 7] = [
         "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche",
     ];
@@ -162,7 +162,7 @@ pub(crate) fn Day(date: chrono::NaiveDate, node: crate::state::Node) -> impl lep
 pub(crate) fn Progress(
     start: chrono::NaiveDateTime,
     end: chrono::NaiveDateTime,
-    node: crate::state::Node,
+    node: crate::Node,
 ) -> impl leptos::IntoView {
     let Some(oh) = node.opening_hours() else {
         return leptos::view! { <div></div> };
@@ -226,7 +226,7 @@ pub(crate) fn Progress(
 #[leptos::component]
 pub(crate) fn Map(
     location: leptos::Memo<crate::Location>,
-    nodes: leptos::Memo<Vec<crate::state::Node>>,
+    nodes: leptos::Memo<Vec<crate::Node>>,
 ) -> impl leptos::IntoView {
     let center = leptos_leaflet::Position::from(location.get_untracked());
     let (map, map_set) = leptos::create_signal(None::<leptos_leaflet::leaflet::Map>);
@@ -247,7 +247,7 @@ pub(crate) fn Map(
 }
 
 #[leptos::component]
-pub(crate) fn Node(node: crate::state::Node) -> impl leptos::IntoView {
+pub(crate) fn Node(node: crate::Node) -> impl leptos::IntoView {
     let node = leptos::create_memo(move |_| node.clone());
 
     leptos::view! {
@@ -266,7 +266,7 @@ pub(crate) fn Node(node: crate::state::Node) -> impl leptos::IntoView {
 }
 
 #[leptos::component]
-pub(crate) fn Popup(node: leptos::Memo<crate::state::Node>) -> impl leptos::IntoView {
+pub(crate) fn Popup(node: leptos::Memo<crate::Node>) -> impl leptos::IntoView {
     leptos::view! {
         <leptos_leaflet::Popup>
             <div>
