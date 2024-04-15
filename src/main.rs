@@ -7,6 +7,7 @@ mod node;
 mod overpass;
 mod param;
 mod search;
+mod taginfo;
 
 use app::App;
 use form::Form;
@@ -15,6 +16,7 @@ use node::Node;
 use overpass::Overpass;
 use param::Param;
 use search::Search;
+use taginfo::Taginfo;
 
 #[derive(Clone, Debug, Default, PartialEq)]
 pub(crate) struct State {

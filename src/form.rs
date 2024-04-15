@@ -1,42 +1,5 @@
 use leptos::{SignalGet, SignalGetUntracked, SignalUpdate};
 
-#[derive(Clone, Debug, serde::Deserialize)]
-#[non_exhaustive]
-struct Taginfo {
-    //url: String,
-    //data_until: String,
-    //page: usize,
-    //rp: usize,
-    //total: usize,
-    data: Vec<Data>,
-}
-
-#[derive(Clone, Debug, serde::Deserialize)]
-#[non_exhaustive]
-struct Data {
-    value: String,
-    //count: usize,
-    //fraction: f32,
-    //in_wiki: bool,
-    //description: String,
-    //desclang: String,
-    //descdir: String,
-}
-
-impl Data {
-    pub fn icon(&self) -> Option<String> {
-        let amenity = &self.value;
-
-        let icon = if amenity == "bicycle_parking" {
-            "oc-parking-bicycle".to_string()
-        } else {
-            format!("oc-{}", amenity.replace('_', "-"))
-        };
-
-        Some(icon)
-    }
-}
-
 #[leptos::component]
 pub(crate) fn Form<F>(
     param: leptos::ReadSignal<crate::Param>,
@@ -55,7 +18,7 @@ where
             let mut taginfo = reqwest::get(&url)
                 .await
                 .unwrap()
-                .json::<Taginfo>()
+                .json::<crate::Taginfo>()
                 .await
                 .unwrap();
             taginfo.data.sort_by(|a, b| a.value.cmp(&b.value));
