@@ -1,6 +1,7 @@
 use leptos::{SignalGet, SignalGetUntracked, SignalUpdate};
 
 #[derive(Clone, Debug, serde::Deserialize)]
+#[non_exhaustive]
 struct Taginfo {
     //url: String,
     //data_until: String,
@@ -11,6 +12,7 @@ struct Taginfo {
 }
 
 #[derive(Clone, Debug, serde::Deserialize)]
+#[non_exhaustive]
 struct Data {
     value: String,
     //count: usize,
