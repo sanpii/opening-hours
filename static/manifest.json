@@ -1,7 +1,7 @@
 {
     "name": "horaires",
     "short_name": "horaires",
-    "start_url": "/index.html",
+    "start_url": "/",
     "display": "standalone",
     "background_color": "#FFFFFF",
     "description": "Trouver les horaires d’ouverture",
