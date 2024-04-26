@@ -271,7 +271,7 @@ pub(crate) fn Popup(node: leptos::Memo<crate::Node>) -> impl leptos::IntoView {
         <leptos_leaflet::Popup>
             <div>
                 <span class=move || node.get().icon></span>
-                move || node.get().name
+                { move || node.get().name }
             </div>
         </leptos_leaflet::Popup>
     }
