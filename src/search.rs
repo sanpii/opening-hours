@@ -118,7 +118,7 @@ pub(crate) fn Timeline(node: leptos::ReadSignal<crate::Node>) -> impl leptos::In
                             <span
                                 class:label=move || hour % 5 == 0
                                 class:font-weight-bold=move || hour == now.hour()
-                                class:text-muted=move || hour != now.hour()
+                                class:text-body-secondary=move || hour != now.hour()
                             >{ format!("{hour:02}") }</span>
                         </leptos::For>
                     </div>
