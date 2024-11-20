@@ -179,7 +179,7 @@ pub(crate) fn Progress(
 
     let mut parts = Vec::new();
 
-    for (id, range) in oh.iter_range(start, end).unwrap().enumerate() {
+    for (id, range) in oh.iter_range(start, end).enumerate() {
         let start = range.range.start.time();
         let end = range.range.end.time();
 

@@ -42,7 +42,6 @@ impl Element {
 
         opening
             .state(now)
-            .unwrap_or(opening_hours::RuleKind::Unknown)
     }
 
     pub fn icon(&self) -> Option<String> {
