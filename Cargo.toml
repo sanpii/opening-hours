@@ -9,7 +9,7 @@ chrono = "0.4.37"
 console_error_panic_hook = "0.1"
 leaflet = "0.4"
 log = "0.4"
-opening-hours = "0.8"
+opening-hours = "0.9"
 wasm-logger = "0.2"
 
 [dependencies.gloo]
