@@ -40,8 +40,7 @@ impl Element {
         };
         let now = chrono::Local::now().naive_local();
 
-        opening
-            .state(now)
+        opening.state(now)
     }
 
     pub fn icon(&self) -> Option<String> {
@@ -71,7 +70,7 @@ impl Element {
         favorites.map(|x| x.contains(&self.id)).unwrap_or_default()
     }
 
-    pub fn position(&self) -> leptos_leaflet::Position {
-        leptos_leaflet::Position::new(self.lat as f64, self.lon as f64)
+    pub fn position(&self) -> leptos_leaflet::prelude::Position {
+        leptos_leaflet::prelude::Position::new(self.lat as f64, self.lon as f64)
     }
 }

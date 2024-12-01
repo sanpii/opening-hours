@@ -1,11 +1,11 @@
 use chrono::{Datelike, Timelike};
-use leptos::{SignalGet, SignalGetUntracked, SignalUpdate, SignalWith};
+use leptos::prelude::*;
 
 #[leptos::component]
-pub(crate) fn Search(state: leptos::ReadSignal<crate::State>) -> impl leptos::IntoView {
+pub(crate) fn Search(state: ReadSignal<crate::State>) -> impl leptos::IntoView {
     let limit = move || state.get().nodes.len().min(state.get().index * 20);
-    let nodes = leptos::create_memo(move |_| state.get().nodes);
-    let location = leptos::create_memo(move |_| state.get().location);
+    let nodes = Memo::new(move |_| state.get().nodes);
+    let location = Memo::new(move |_| state.get().location);
 
     leptos::view! {
         <Map location=location nodes=nodes />
@@ -15,16 +15,16 @@ pub(crate) fn Search(state: leptos::ReadSignal<crate::State>) -> impl leptos::In
         </div>
 
         <ul id="list">
-            <leptos::For each=move || { state.get().nodes[..limit()].to_vec() } key=|node| node.id let:node>
+            <For each=move || { state.get().nodes[..limit()].to_vec() } key=|node| node.id let:node>
                 <Item node />
-            </leptos::For>
+            </For>
         </ul>
     }
 }
 
 #[leptos::component]
 pub(crate) fn Item(node: crate::Node) -> impl leptos::IntoView {
-    let (node, node_set) = leptos::create_signal(node);
+    let (node, node_set) = signal(node);
 
     let class = move || match node.get().state {
         opening_hours::RuleKind::Open => "open",
@@ -43,31 +43,31 @@ pub(crate) fn Item(node: crate::Node) -> impl leptos::IntoView {
                 <span class=move || node.get().icon></span>
                 { move || node.get().name }
                 <span class="favorite float-end" on:click=favorite>
-                    <leptos::Show when=move || node.get().favorite>
+                    <Show when=move || node.get().favorite>
                         <img src="/img/star.png" title="Supprimer des favoris" />
-                    </leptos::Show>
-                    <leptos::Show when=move || !node.get().favorite>
+                    </Show>
+                    <Show when=move || !node.get().favorite>
                         <img src="/img/empty-star.png" title="Ajouter au favoris" />
-                    </leptos::Show>
+                    </Show>
                 </span>
-                <leptos::Show when=move || node.get().wifi>
+                <Show when=move || node.get().wifi>
                     <span class="wifi float-end">
                         <img src="/img/wifi.png" title="Wifi disponible" />
                     </span>
-                </leptos::Show>
+                </Show>
                 <span class="diet">
-                    <leptos::Show when=move || node.get().vegan>
+                    <Show when=move || node.get().vegan>
                         <span class="float-end" title="Végétalien">+</span>
-                    </leptos::Show>
-                    <leptos::Show when=move || { node.get().vegetarian || node.get().vegan }>
+                    </Show>
+                    <Show when=move || { node.get().vegetarian || node.get().vegan }>
                         <span class="float-end" title="Végétarien">V</span>
-                    </leptos::Show>
+                    </Show>
                 </span>
             </div>
             <div class="detail">
                 <Timeline node=node />
                 <div>
-                    <leptos::Show when=move || node.get().website.is_some()>
+                    <Show when=move || node.get().website.is_some()>
                         <div>
                             <a href=move || node.get().website.unwrap()>
                                 <span class="oc-computer"></span>
@@ -81,15 +81,15 @@ pub(crate) fn Item(node: crate::Node) -> impl leptos::IntoView {
                                 }) }</span>
                             </a>
                         </div>
-                    </leptos::Show>
-                    <leptos::Show when=move || node.get().phone.is_some()>
+                    </Show>
+                    <Show when=move || node.get().phone.is_some()>
                         <div>
                             <a href=move || format!("tel:{}", node.get().phone.unwrap())>
                                 <span class="oc-telephone"></span>
                                 <span class="label">{ node.get().phone }</span>
                             </a>
                         </div>
-                    </leptos::Show>
+                    </Show>
                     <div>
                         <a href=move || format!("geo:{},{}", node.get().lat, node.get().lon)>
                             <span class="oc-guidepost"></span>
@@ -103,7 +103,7 @@ pub(crate) fn Item(node: crate::Node) -> impl leptos::IntoView {
 }
 
 #[leptos::component]
-pub(crate) fn Timeline(node: leptos::ReadSignal<crate::Node>) -> impl leptos::IntoView {
+pub(crate) fn Timeline(node: ReadSignal<crate::Node>) -> impl leptos::IntoView {
     let now = chrono::Local::now().naive_local();
     let date = now - chrono::Duration::days(now.weekday() as i64);
 
@@ -114,20 +114,20 @@ pub(crate) fn Timeline(node: leptos::ReadSignal<crate::Node>) -> impl leptos::In
                     <span class="day col-lg-1"></span>
 
                     <div class="col">
-                        <leptos::For each=move || (0..24) key=|x| *x let:hour>
+                        <For each=move || (0..24) key=|x| *x let:hour>
                             <span
                                 class:label=move || hour % 5 == 0
                                 class:font-weight-bold=move || hour == now.hour()
                                 class:text-body-secondary=move || hour != now.hour()
                             >{ format!("{hour:02}") }</span>
-                        </leptos::For>
+                        </For>
                     </div>
                 </div>
             </div>
             <div class="container">
-                <leptos::For each=move || (0..7) key=|x| *x let:day>
+                <For each=move || (0..7) key=|x| *x let:day>
                     <Day date=date.date() + chrono::Duration::days(day) node=node.get() />
-                </leptos::For>
+                </For>
             </div>
         </div>
     }
@@ -165,7 +165,7 @@ pub(crate) fn Progress(
     node: crate::Node,
 ) -> impl leptos::IntoView {
     let Some(oh) = node.opening_hours() else {
-        return leptos::view! { <div></div> };
+        return leptos::view! { <div></div> }.into_any();
     };
 
     #[derive(Clone)]
@@ -204,7 +204,7 @@ pub(crate) fn Progress(
 
     leptos::view! {
         <div class="progress">
-            <leptos::For each=move || parts.clone() key=|x| x.id let:part>
+            <For each=move || parts.clone() key=|x| x.id let:part>
                 <div
                     role="progressbar"
                     style=move || format!("width:{}%", part.size)
@@ -218,61 +218,62 @@ pub(crate) fn Progress(
                 >
                     <span class:d-lg-none=move || part.size < 11.>{ part.legend.clone() }</span>
                 </div>
-            </leptos::For>
+            </For>
         </div>
     }
+    .into_any()
 }
 
 #[leptos::component]
 pub(crate) fn Map(
-    location: leptos::Memo<crate::Location>,
-    nodes: leptos::Memo<Vec<crate::Node>>,
+    location: Memo<crate::Location>,
+    nodes: Memo<Vec<crate::Node>>,
 ) -> impl leptos::IntoView {
-    let center = leptos_leaflet::Position::from(location.get_untracked());
-    let (map, map_set) = leptos::create_signal(None::<leptos_leaflet::leaflet::Map>);
-    leptos::create_effect(move |_| {
+    let center = leptos_leaflet::prelude::Position::from(location.get_untracked());
+    let map = RwSignal::new_local(None::<leptos_leaflet::leaflet::Map>);
+    Effect::new(move |_| {
         if let Some(map) = map.get() {
             map.fit_bounds(&location.get().into());
         }
     });
 
     leptos::view! {
-        <leptos_leaflet::MapContainer style="height: 280px" map=map_set center zoom=18. set_view=true>
-            <leptos_leaflet::TileLayer url="https://tile.openstreetmap.org/{z}/{x}/{y}.png" attribution="" />
-            <leptos::For each=move || nodes.get() key=|node| node.id let:node>
+        <leptos_leaflet::prelude::MapContainer style="height: 280px" map=map.write_only() center zoom=18. set_view=true>
+            <leptos_leaflet::prelude::TileLayer url="https://tile.openstreetmap.org/{z}/{x}/{y}.png" attribution="" />
+            <For each=move || nodes.get() key=|node| node.id let:node>
                 <Node node />
-            </leptos::For>
-        </leptos_leaflet::MapContainer>
+            </For>
+        </leptos_leaflet::prelude::MapContainer>
     }
 }
 
 #[leptos::component]
 pub(crate) fn Node(node: crate::Node) -> impl leptos::IntoView {
-    let node = leptos::create_memo(move |_| node.clone());
+    let node = Memo::new(move |_| node.clone());
 
     leptos::view! {
-        <leptos::Show when=move || node.with(|x| x.nodes.is_empty())
+        <Show when=move || node.with(|x| x.nodes.is_empty())
             fallback=move || leptos::view! {
-                <leptos_leaflet::Polygon positions=node.with(|x| x.nodes.clone()) color=node.with(|x| x.color())>
+                <leptos_leaflet::prelude::Polygon positions=node.with(|x| x.nodes.clone()) color=node.with(|x| x.color())>
                     <Popup node />
-                </leptos_leaflet::Polygon>
+                </leptos_leaflet::prelude::Polygon>
             }
         >
-            <leptos_leaflet::Circle center=node.with(|x| x.position()) radius=5. color=node.with(|x| x.color())>
+            <leptos_leaflet::prelude::Circle center=node.with(|x| x.position()) radius=5. color=node.with(|x| x.color())>
                 <Popup node />
-            </leptos_leaflet::Circle>
-        </leptos::Show>
+            </leptos_leaflet::prelude::Circle>
+        </Show>
     }
 }
 
 #[leptos::component]
-pub(crate) fn Popup(node: leptos::Memo<crate::Node>) -> impl leptos::IntoView {
+pub(crate) fn Popup(node: Memo<crate::Node>) -> impl leptos::IntoView {
     leptos::view! {
-        <leptos_leaflet::Popup>
+        <leptos_leaflet::prelude::Popup>
             <div>
                 <span class=move || node.get().icon></span>
                 { move || node.get().name }
             </div>
-        </leptos_leaflet::Popup>
+        </leptos_leaflet::prelude::Popup>
     }
 }

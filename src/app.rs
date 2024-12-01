@@ -1,7 +1,9 @@
-use leptos::{SignalGet, SignalGetUntracked, SignalSet, SignalUpdate};
+use leptos::prelude::*;
 
 #[leptos::component]
 pub(crate) fn App() -> impl leptos::IntoView {
+    use leptos_router::components::{Route, Router, Routes};
+
     leptos::view! {
         <header>
             <nav class="navbar">
@@ -9,13 +11,13 @@ pub(crate) fn App() -> impl leptos::IntoView {
             </nav>
         </header>
 
-        <leptos_router::Router>
-            <leptos_router::Routes>
-                <leptos_router::Route path="about" view=About />
-                <leptos_router::Route path="/:where?/:type?/:what?" view=Index />
-                <leptos_router::Route path="/*any" view=NotFound />
-            </leptos_router::Routes>
-        </leptos_router::Router>
+        <Router>
+            <Routes fallback=|| "This page could not be found.">
+                <Route path=leptos_router::path!("about") view=About />
+                <Route path=leptos_router::path!("/:where?/:type?/:what?") view=Index />
+                <Route path=leptos_router::path!("/*any") view=NotFound />
+            </Routes>
+        </Router>
 
         <footer>
             <a href="/about">À propos</a>
@@ -64,22 +66,22 @@ pub(crate) fn NotFound() -> impl leptos::IntoView {
 
 #[leptos::component]
 pub(crate) fn Index() -> impl leptos::IntoView {
-    let state = leptos::create_rw_signal(crate::State::default());
+    let state = RwSignal::new(crate::State::default());
 
-    let params = leptos_router::use_params_map();
-    let query = leptos_router::use_query_map();
+    let params = leptos_router::hooks::use_params_map();
+    let query = leptos_router::hooks::use_query_map();
 
-    let param = leptos::create_rw_signal(crate::Param::from(
+    let param = RwSignal::new(crate::Param::from(
         &params.get_untracked(),
         &query.get_untracked(),
     ));
-    let _ = leptos::watch(
+    let _ = Effect::watch(
         move || (params.get(), query.get()),
-        move |(params, query), _, _| param.set(crate::Param::from(params, query)),
+        move |(params, query), _, _| param.set(crate::Param::from(&params, &query)),
         false,
     );
 
-    leptos::create_local_resource(move || (param.get(), state), do_search);
+    LocalResource::new(move || do_search(param.get(), state));
 
     let have_no_result = move || {
         !state.get().searching
@@ -89,37 +91,38 @@ pub(crate) fn Index() -> impl leptos::IntoView {
     };
 
     let have_more = move || state.get().index * 20 < state.get().nodes.len();
+    let navigate = leptos_router::hooks::use_navigate();
 
     leptos::view! {
         <crate::Form param=param.read_only() on_search=move |p| {
-            let navigate = leptos_router::use_navigate();
             navigate(&p.as_url(), Default::default());
             param.set(p);
         } />
 
-        <leptos::ErrorBoundary fallback=move |_| leptos::view! { <p>Error</p> }>
-            <leptos::Show when=move || state.get().searching>
+        <leptos::error::ErrorBoundary fallback=move |_| leptos::view! { <p>Error</p> }>
+            <Show when=move || state.get().searching>
                 <div class="progress">
                     <div class="progress-bar" style:width=move || format!("{}%", state.get().progress)></div>
                 </div>
-            </leptos::Show>
-            <leptos::Show when=have_no_result>
+            </Show>
+            <Show when=have_no_result>
                 <div class="alert alert-warning">Aucun résultat.</div>
-            </leptos::Show>
-            <leptos::Show when=move || !state.get().nodes.is_empty()>
+            </Show>
+            <Show when=move || !state.get().nodes.is_empty()>
                 <crate::Search state=state.read_only() />
-                <leptos::Show when=have_more>
+                <Show when=have_more>
                     <div>
                         <button on:click=move |_| state.update(|s| s.index += 1) class="btn btn-primary center-block">Load more</button>
                     </div>
-                </leptos::Show>
-            </leptos::Show>
-        </leptos::ErrorBoundary>
+                </Show>
+            </Show>
+        </leptos::error::ErrorBoundary>
     }
 }
 
 async fn do_search(
-    (param, state): (crate::Param, leptos::RwSignal<crate::State>),
+    param: crate::Param,
+    state: RwSignal<crate::State>,
 ) -> leptos::error::Result<()> {
     if param.r#where.is_empty() {
         return Ok(());
@@ -149,7 +152,7 @@ async fn do_search(
     Ok(())
 }
 
-fn push(state: leptos::RwSignal<crate::State>) {
+fn push(state: RwSignal<crate::State>) {
     state.update(|s| {
         s.searching = true;
         s.progress += 25;

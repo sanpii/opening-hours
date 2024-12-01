@@ -1,31 +1,23 @@
-use leptos::{SignalGet, SignalGetUntracked, SignalUpdate};
+use leptos::prelude::*;
 
 #[leptos::component]
-pub(crate) fn Form<F>(
-    param: leptos::ReadSignal<crate::Param>,
-    on_search: F,
-) -> impl leptos::IntoView
+pub(crate) fn Form<F>(param: ReadSignal<crate::Param>, on_search: F) -> impl leptos::IntoView
 where
     F: Fn(crate::Param) + 'static,
 {
-    use leptos::IntoView;
+    let param = RwSignal::new(param.get_untracked());
+    let types = LocalResource::new(|| async move {
+        let url = format!("https://taginfo.openstreetmap.org/api/4/key/values?key=amenity&filter=all&lang=fr&sortname=count&sortorder=desc&rp=50&page=1");
+        let mut taginfo = reqwest::get(&url)
+            .await
+            .unwrap()
+            .json::<crate::Taginfo>()
+            .await
+            .unwrap();
+        taginfo.data.sort_by(|a, b| a.value.cmp(&b.value));
 
-    let param = leptos::create_rw_signal(param.get_untracked());
-    let types = leptos::create_local_resource(
-        move || "",
-        |query| async move {
-            let url = format!("https://taginfo.openstreetmap.org/api/4/key/values?key=amenity&filter=all&lang=fr&sortname=count&sortorder=desc&rp=50&page=1&query={query}");
-            let mut taginfo = reqwest::get(&url)
-                .await
-                .unwrap()
-                .json::<crate::Taginfo>()
-                .await
-                .unwrap();
-            taginfo.data.sort_by(|a, b| a.value.cmp(&b.value));
-
-            taginfo
-        },
-    );
+        taginfo
+    });
 
     leptos::view! {
         <form>
@@ -37,7 +29,7 @@ where
                     class="form-control"
                     required
                     on:input=move |ev| {
-                        param.update(|p| p.r#where = leptos::event_target_value(&ev));
+                        param.update(|p| p.r#where = event_target_value(&ev));
                     }
                 />
             </div>
@@ -50,20 +42,20 @@ where
                     class="form-control"
                     list="types"
                     on:input=move |ev| {
-                    param.update(|p| p.r#type = leptos::event_target_value(&ev));
+                    param.update(|p| p.r#type = event_target_value(&ev));
                 }
                 />
                 <datalist id="types">
                     {move || match types.get() {
-                        None => leptos::view! {}.into_view(),
+                        None => View::new(()).into_any(),
                         Some(types) => leptos::view! {
-                            <leptos::For each=move || types.data.clone() key=|ty| ty.value.clone() let:ty>
+                            <For each=move || types.data.clone() key=|ty| ty.value.clone() let:ty>
                                 <option value=ty.clone().value>
                                     <span class=ty.icon().unwrap_or_default()></span>
-                                    { ty.value }
+                                    { ty.value.clone() }
                                 </option>
-                            </leptos::For>
-                        }.into_view()
+                            </For>
+                        }.into_any()
                     }}
                 </datalist>
             </div>
@@ -75,7 +67,7 @@ where
                     placeholder="Nom ?"
                     class="form-control"
                     on:input=move |ev| {
-                        param.update(|p| p.what = leptos::event_target_value(&ev));
+                        param.update(|p| p.what = event_target_value(&ev));
                     }
                 />
             </div>
@@ -89,7 +81,7 @@ where
                     value=move || param.get().wifi
                     on_toggle=move |value| param.update(|p| p.wifi = value)
                 >Avec wifi</Checkbox>
-                <leptos::Show when=move || param.get().r#type == "restaurant">
+                <Show when=move || param.get().r#type == "restaurant">
                     <Checkbox
                         value=move || param.get().vegetarian
                         on_toggle=move |value| param.update(|p| p.vegetarian = value)
@@ -98,7 +90,7 @@ where
                         value=move || param.get().vegan
                         on_toggle=move |value| param.update(|p| p.vegan = value)
                     >Vegan</Checkbox>
-                </leptos::Show>
+                </Show>
             </div>
 
             <button class="btn btn-primary" on:click=move |ev| {
@@ -110,7 +102,11 @@ where
 }
 
 #[leptos::component]
-fn Checkbox<I, O>(children: leptos::ChildrenFn, value: I, on_toggle: O) -> impl leptos::IntoView
+fn Checkbox<I, O>(
+    children: leptos::children::ChildrenFn,
+    value: I,
+    on_toggle: O,
+) -> impl leptos::IntoView
 where
     I: Fn() -> bool + 'static,
     O: Fn(bool) + 'static,
@@ -120,10 +116,10 @@ where
             <input
                 type="checkbox"
                 class="form-check-input"
-                value=value
-                on:input=move |ev| on_toggle(leptos::event_target_checked(&ev))
+                value=value()
+                on:input=move |ev| on_toggle(event_target_checked(&ev))
             />
-            <label class="form-check-label">{ children }</label>
+            <label class="form-check-label">{ children() }</label>
         </div>
     }
 }
