@@ -31,7 +31,7 @@ impl From<Location> for leptos_leaflet::leaflet::LatLngBounds {
     }
 }
 
-impl From<Location> for leptos_leaflet::Position {
+impl From<Location> for leptos_leaflet::prelude::Position {
     fn from(value: Location) -> Self {
         let corner1 = leptos_leaflet::leaflet::LatLng::new(
             value.boundingbox[0].parse().unwrap(),

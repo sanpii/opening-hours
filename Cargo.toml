@@ -8,6 +8,7 @@ edition = "2021"
 chrono = "0.4.37"
 console_error_panic_hook = "0.1"
 leaflet = "0.4"
+leptos_router = "0.7"
 log = "0.4"
 opening-hours = "0.9"
 wasm-logger = "0.2"
@@ -18,15 +19,11 @@ version = "0.11"
 features = ["storage"]
 
 [dependencies.leptos]
-version = "0.6"
-features = ["csr"]
-
-[dependencies.leptos_router]
-version = "0.6"
+version = "0.7"
 features = ["csr"]
 
 [dependencies.leptos-leaflet]
-version = "0.8"
+version = "0.9"
 features = ["csr"]
 
 [dependencies.reqwest]

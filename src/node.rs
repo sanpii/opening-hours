@@ -7,7 +7,7 @@ pub(crate) struct Node {
     pub lat: f32,
     pub lon: f32,
     pub name: String,
-    pub nodes: Vec<leptos_leaflet::Position>,
+    pub nodes: Vec<leptos_leaflet::prelude::Position>,
     pub phone: Option<String>,
     pub website: Option<String>,
     pub state: opening_hours::RuleKind,
@@ -26,8 +26,8 @@ impl Node {
         }
     }
 
-    pub fn position(&self) -> leptos_leaflet::Position {
-        leptos_leaflet::Position::new(self.lat as f64, self.lon as f64)
+    pub fn position(&self) -> leptos_leaflet::prelude::Position {
+        leptos_leaflet::prelude::Position::new(self.lat as f64, self.lon as f64)
     }
 
     pub fn opening_hours(&self) -> Option<opening_hours::OpeningHours> {
@@ -79,7 +79,7 @@ impl From<crate::Overpass> for Vec<Node> {
         fn replace_ref_by_node(
             value: &crate::Overpass,
             refs: &[u64],
-        ) -> Vec<leptos_leaflet::Position> {
+        ) -> Vec<leptos_leaflet::prelude::Position> {
             let mut nodes = Vec::new();
 
             for r#ref in refs {

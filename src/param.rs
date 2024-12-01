@@ -10,11 +10,14 @@ pub(crate) struct Param {
 }
 
 impl Param {
-    pub fn from(params: &leptos_router::ParamsMap, query: &leptos_router::ParamsMap) -> Self {
+    pub fn from(
+        params: &leptos_router::params::ParamsMap,
+        query: &leptos_router::params::ParamsMap,
+    ) -> Self {
         Self {
-            r#where: params.get("where").cloned().unwrap_or_default(),
-            r#type: params.get("type").cloned().unwrap_or_default(),
-            what: params.get("what").cloned().unwrap_or_default(),
+            r#where: params.get("where").unwrap_or_default(),
+            r#type: params.get("type").unwrap_or_default(),
+            what: params.get("what").unwrap_or_default(),
 
             wo_hour: query.get("wo_hour").is_some(),
             wifi: query.get("wifi").is_some(),

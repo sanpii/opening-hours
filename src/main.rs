@@ -31,5 +31,5 @@ pub(crate) struct State {
 fn main() {
     console_error_panic_hook::set_once();
     wasm_logger::init(wasm_logger::Config::new(log::Level::Debug));
-    leptos::mount_to_body(|| leptos::view! { <App /> })
+    leptos::mount::mount_to_body(|| leptos::view! { <App /> })
 }
