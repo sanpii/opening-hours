@@ -22,7 +22,7 @@ version = "0.6"
 features = ["csr"]
 
 [dependencies.leptos_router]
-version = "0.6"
+version = "0.7"
 features = ["csr"]
 
 [dependencies.leptos-leaflet]
