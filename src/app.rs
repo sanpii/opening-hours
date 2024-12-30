@@ -77,7 +77,7 @@ pub(crate) fn Index() -> impl leptos::IntoView {
     ));
     let _ = Effect::watch(
         move || (params.get(), query.get()),
-        move |(params, query), _, _| param.set(crate::Param::from(&params, &query)),
+        move |(params, query), _, _| param.set(crate::Param::from(params, query)),
         false,
     );
 

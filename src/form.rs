@@ -7,8 +7,8 @@ where
 {
     let param = RwSignal::new(param.get_untracked());
     let types = LocalResource::new(|| async move {
-        let url = format!("https://taginfo.openstreetmap.org/api/4/key/values?key=amenity&filter=all&lang=fr&sortname=count&sortorder=desc&rp=50&page=1");
-        let mut taginfo = reqwest::get(&url)
+        let url = "https://taginfo.openstreetmap.org/api/4/key/values?key=amenity&filter=all&lang=fr&sortname=count&sortorder=desc&rp=50&page=1";
+        let mut taginfo = reqwest::get(url)
             .await
             .unwrap()
             .json::<crate::Taginfo>()
