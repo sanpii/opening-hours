@@ -16,7 +16,7 @@ ifneq (,$(wildcard ./.env))
 endif
 
 build: yarn
-	$(TRUNK) build $(TRUNK_FLAGS)
+	RUSTFLAGS='--cfg getrandom_backend="wasm_js"' $(TRUNK) build $(TRUNK_FLAGS)
 .PHONY: build
 
 yarn: yarn.lock
