@@ -18,6 +18,14 @@ use param::Param;
 use search::Search;
 use taginfo::Taginfo;
 
+pub(crate) type Result<T = ()> = std::result::Result<T, Error>;
+
+#[derive(Debug, thiserror::Error)]
+pub(crate) enum Error {
+    #[error("{0}")]
+    Http(#[from] reqwest::Error),
+}
+
 #[derive(Clone, Debug, Default, PartialEq)]
 pub(crate) struct State {
     pub errors: Vec<String>,

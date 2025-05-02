@@ -123,7 +123,7 @@ pub(crate) fn Index() -> impl leptos::IntoView {
 async fn do_search(
     param: crate::Param,
     state: RwSignal<crate::State>,
-) -> leptos::error::Result<()> {
+) -> crate::Result {
     if param.r#where.is_empty() {
         return Ok(());
     }
@@ -159,7 +159,7 @@ fn push(state: RwSignal<crate::State>) {
     });
 }
 
-async fn location(r#where: &str) -> leptos::error::Result<crate::Location> {
+async fn location(r#where: &str) -> crate::Result<crate::Location> {
     let url = format!(
         "https://nominatim.openstreetmap.org/search.php?q={}&format=jsonv2",
         r#where
@@ -173,7 +173,7 @@ async fn location(r#where: &str) -> leptos::error::Result<crate::Location> {
 async fn update_nodes(
     param: &crate::Param,
     r#box: &[String],
-) -> leptos::error::Result<crate::Overpass> {
+) -> crate::Result<crate::Overpass> {
     let filter = param.as_filter(r#box);
     let request = format!("[out:json][timeout:25]; (way{filter} >; node{filter}); out+body;");
 
