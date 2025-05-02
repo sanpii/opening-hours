@@ -19,7 +19,7 @@ version = "0.11"
 features = ["storage"]
 
 [dependencies.leptos]
-version = "0.7"
+version = "0.8"
 features = ["csr"]
 
 [dependencies.leptos-leaflet]
