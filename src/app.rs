@@ -120,10 +120,7 @@ pub(crate) fn Index() -> impl leptos::IntoView {
     }
 }
 
-async fn do_search(
-    param: crate::Param,
-    state: RwSignal<crate::State>,
-) -> crate::Result {
+async fn do_search(param: crate::Param, state: RwSignal<crate::State>) -> crate::Result {
     if param.r#where.is_empty() {
         return Ok(());
     }
@@ -170,10 +167,7 @@ async fn location(r#where: &str) -> crate::Result<crate::Location> {
     Ok(location)
 }
 
-async fn update_nodes(
-    param: &crate::Param,
-    r#box: &[String],
-) -> crate::Result<crate::Overpass> {
+async fn update_nodes(param: &crate::Param, r#box: &[String]) -> crate::Result<crate::Overpass> {
     let filter = param.as_filter(r#box);
     let request = format!("[out:json][timeout:25]; (way{filter} >; node{filter}); out+body;");
 
