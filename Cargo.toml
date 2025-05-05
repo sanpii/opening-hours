@@ -23,7 +23,7 @@ version = "0.7"
 features = ["csr"]
 
 [dependencies.leptos-leaflet]
-version = "0.9"
+version = "0.10"
 features = ["csr"]
 
 [dependencies.reqwest]
