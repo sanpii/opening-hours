@@ -273,6 +273,9 @@ pub(crate) fn Popup(node: Memo<crate::Node>) -> impl leptos::IntoView {
             <div>
                 <span class=move || node.get().icon></span>
                 { move || node.get().name }
+                <span class="float-end">
+                    <a class="oc-clock" href=move || format!("#{}", node.get().id)></a>
+                </span>
                 <State node />
             </div>
         </leptos_leaflet::prelude::Popup>
