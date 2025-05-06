@@ -40,6 +40,14 @@ ul#list {
     background-color: rgb(222, 242, 222);
 }
 
+span.closed {
+    color: red;
+}
+
+span.open {
+    color: green;
+}
+
 #list .detail {
     display: flex;
     width: 100%;

@@ -273,7 +273,24 @@ pub(crate) fn Popup(node: Memo<crate::Node>) -> impl leptos::IntoView {
             <div>
                 <span class=move || node.get().icon></span>
                 { move || node.get().name }
+                <State node />
             </div>
         </leptos_leaflet::prelude::Popup>
+    }
+}
+
+#[leptos::component]
+pub(crate) fn State(node: Memo<crate::Node>) -> impl leptos::IntoView {
+    let state = move || match node.get().state {
+        opening_hours::RuleKind::Open => "Ouvert",
+        opening_hours::RuleKind::Closed => "Fermé",
+        opening_hours::RuleKind::Unknown => "",
+    };
+
+    leptos::view! {
+        <div>
+            <span class=move || node.get().state.as_str()> { state }</span>
+            { move || node.get().next_change().map(|x| format!(" · {x}")).unwrap_or_default() }
+        </div>
     }
 }

@@ -36,6 +36,30 @@ impl Node {
             .and_then(|x| opening_hours::OpeningHours::parse(x).ok())
     }
 
+    pub fn next_change(&self) -> Option<String> {
+        let oh = self.opening_hours()?;
+        let now = chrono::Local::now().naive_local();
+        let next = Self::humanize(&now, &oh.next_change(now)?);
+
+        let text = match self.state {
+            opening_hours::RuleKind::Open => format!("Ferme {next}"),
+            opening_hours::RuleKind::Closed => format!("Ouvre {next}"),
+            opening_hours::RuleKind::Unknown => String::new(),
+        };
+
+        Some(text)
+    }
+
+    pub fn humanize(now: &chrono::NaiveDateTime, date: &chrono::NaiveDateTime) -> String {
+        let format = if now.date() == date.date() {
+            "à %H:%M"
+        } else {
+            "%A à %H:%M"
+        };
+
+        date.format(format).to_string()
+    }
+
     pub fn favorite(&mut self) {
         use gloo::storage::Storage;
 
