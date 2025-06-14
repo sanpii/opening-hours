@@ -117,7 +117,7 @@ impl From<crate::Overpass> for Vec<Node> {
         value
             .elements
             .iter()
-            .filter(|x| x.tags.contains_key("name") && x.tags.contains_key("amenity"))
+            .filter(|x| x.tags.contains_key("name"))
             .map(|x| {
                 let mut node = Node::from(x);
 
