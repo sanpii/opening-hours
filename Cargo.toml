@@ -11,7 +11,6 @@ leaflet = "0.4"
 leptos_router = "0.8"
 log = "0.4"
 opening-hours = "1.0"
-thiserror = "2.0"
 wasm-logger = "0.2"
 
 [dependencies.gloo]

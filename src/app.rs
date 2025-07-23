@@ -8,12 +8,16 @@ pub(crate) fn App() -> impl leptos::IntoView {
         <header>
             <nav class="navbar">
                 <a class="navbar-brand" href="/">Horaires</a>
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a href="/favorites">Favorites</a></li>
+                </ul>
             </nav>
         </header>
 
         <Router>
             <Routes fallback=|| "This page could not be found.">
-                <Route path=leptos_router::path!("about") view=About />
+                <Route path=leptos_router::path!("/about") view=About />
+                <Route path=leptos_router::path!("/favorites") view=Favorites />
                 <Route path=leptos_router::path!("/:where?/:type?/:what?") view=Index />
                 <Route path=leptos_router::path!("/*any") view=NotFound />
             </Routes>
@@ -55,6 +59,37 @@ pub(crate) fn About() -> impl leptos::IntoView {
     leptos::view! {
         <div inner_html=html />
     }
+}
+
+#[leptos::component]
+pub(crate) fn Favorites() -> impl leptos::IntoView {
+    let (favorites, _) = signal(crate::favorites());
+    let nodes = LocalResource::new(move || nodes(favorites.get()));
+
+    leptos::view! {
+        <Transition fallback=|| view! { <div>"Loading..."</div> }>
+            <ErrorBoundary fallback=move |_| leptos::view! { <p>Error</p> }>
+                {move || if favorites.get().is_empty() {
+                    leptos::view! { <div>Aucun favoris</div> }.into_any()
+                } else {
+                    leptos::view! {
+                        <ul id="list">
+                            {
+                                move || Suspend::new(async move {
+                                    nodes.await
+                                        .map(|nodes|
+                                            nodes.into_iter()
+                                                .map(|node| leptos::view! { <crate::search::Item node /> })
+                                                .collect::<Vec<_>>()
+                                        )
+                                })
+                            }
+                        </ul>
+                    }.into_any()
+                }}
+            </ErrorBoundary>
+        </Transition>
+    }.into_any()
 }
 
 #[leptos::component]
@@ -177,6 +212,26 @@ async fn update_nodes(param: &crate::Param, r#box: &[String]) -> crate::Result<c
 
     Ok(nodes)
 }
+
+async fn nodes(ids: Vec<u64>) -> crate::Result<Vec<crate::Node>> {
+    if ids.is_empty() {
+        return Ok(Vec::new());
+    }
+
+    let id = ids
+        .iter()
+        .map(|x| x.to_string())
+        .collect::<Vec<_>>()
+        .join(",");
+    let url = format!(
+        "https://overpass-api.de/api/interpreter?data=[out:json][timeout:25];node(id:{id});out+body;"
+    );
+
+    let nodes = reqwest::get(&url).await?.json::<crate::Overpass>().await?;
+
+    Ok(transform_nodes(nodes))
+}
+
 fn transform_nodes(nodes: crate::Overpass) -> Vec<crate::Node> {
     let mut nodes: Vec<crate::Node> = nodes.into();
     nodes.sort();

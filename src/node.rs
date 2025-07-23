@@ -63,8 +63,7 @@ impl Node {
     pub fn favorite(&mut self) {
         use gloo::storage::Storage;
 
-        let mut favorites =
-            gloo::storage::LocalStorage::get::<Vec<u64>>("favorites").unwrap_or_default();
+        let mut favorites = crate::favorites();
 
         if let Some(x) = favorites.iter().position(|x| x == &self.id) {
             self.favorite = false;

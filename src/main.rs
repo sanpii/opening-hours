@@ -18,13 +18,7 @@ use param::Param;
 use search::Search;
 use taginfo::Taginfo;
 
-pub(crate) type Result<T = ()> = std::result::Result<T, Error>;
-
-#[derive(Debug, thiserror::Error)]
-pub(crate) enum Error {
-    #[error("{0}")]
-    Http(#[from] reqwest::Error),
-}
+pub(crate) type Result<T = ()> = std::result::Result<T, leptos::error::Error>;
 
 #[derive(Clone, Debug, Default, PartialEq)]
 pub(crate) struct State {
@@ -40,4 +34,10 @@ fn main() {
     console_error_panic_hook::set_once();
     wasm_logger::init(wasm_logger::Config::new(log::Level::Debug));
     leptos::mount::mount_to_body(|| leptos::view! { <App /> })
+}
+
+fn favorites() -> Vec<u64> {
+    use gloo::storage::Storage as _;
+
+    gloo::storage::LocalStorage::get::<Vec<u64>>("favorites").unwrap_or_default()
 }
