@@ -7,7 +7,7 @@ edition = "2024"
 [dependencies]
 chrono = "0.4"
 console_error_panic_hook = "0.1"
-leaflet = "0.4"
+leaflet = "0.5"
 leptos_router = "0.8"
 log = "0.4"
 opening-hours = "1.0"
