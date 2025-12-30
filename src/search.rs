@@ -114,7 +114,7 @@ pub(crate) fn Timeline(node: ReadSignal<crate::Node>) -> impl leptos::IntoView {
                     <span class="day col-lg-1"></span>
 
                     <div class="col">
-                        <For each=move || (0..24) key=|x| *x let:hour>
+                        <For each=move || 0..24 key=|x| *x let:hour>
                             <span
                                 class:label=move || hour % 5 == 0
                                 class:font-weight-bold=move || hour == now.hour()
@@ -125,7 +125,7 @@ pub(crate) fn Timeline(node: ReadSignal<crate::Node>) -> impl leptos::IntoView {
                 </div>
             </div>
             <div class="container">
-                <For each=move || (0..7) key=|x| *x let:day>
+                <For each=move || 0..7 key=|x| *x let:day>
                     <Day date=date.date() + chrono::Duration::days(day) node=node.get() />
                 </For>
             </div>
@@ -173,7 +173,7 @@ pub(crate) fn Progress(
         id: usize,
         size: f32,
         legend: String,
-        comment: String,
+        _comment: String,
         state: opening_hours::RuleKind,
     }
 
@@ -197,7 +197,7 @@ pub(crate) fn Progress(
             } else {
                 String::new()
             },
-            comment: range.comments.join("\n"),
+            _comment: range.comments.join("\n"),
             size: (end - start).num_minutes() as f32 * 100. / 1440.,
         });
     }
