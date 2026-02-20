@@ -128,6 +128,16 @@ pub(crate) fn Index() -> impl leptos::IntoView {
     let have_more = move || state.get().index * 20 < state.get().nodes.len();
     let navigate = leptos_router::hooks::use_navigate();
 
+    let have_error = move || !state.get().errors.is_empty();
+    let errors = move || {
+        state
+            .get()
+            .errors
+            .into_iter()
+            .map(|x| leptos::view! { { x }<br /> })
+            .collect::<Vec<_>>()
+    };
+
     leptos::view! {
         <crate::Form param=param.read_only() on_search=move |p| {
             navigate(&p.as_url(), Default::default());
@@ -138,6 +148,11 @@ pub(crate) fn Index() -> impl leptos::IntoView {
             <Show when=move || state.get().searching>
                 <div class="progress">
                     <div class="progress-bar" style:width=move || format!("{}%", state.get().progress)></div>
+                </div>
+            </Show>
+            <Show when=have_error>
+                <div class="alert alert-danger">
+                    { errors }
                 </div>
             </Show>
             <Show when=have_no_result>
@@ -155,7 +170,19 @@ pub(crate) fn Index() -> impl leptos::IntoView {
     }
 }
 
-async fn do_search(param: crate::Param, state: RwSignal<crate::State>) -> crate::Result {
+async fn do_search(param: crate::Param, state: RwSignal<crate::State>) {
+    if let Err(err) = try_search(param, state).await {
+        state.update(|s| {
+            s.errors.push(err.to_string());
+            s.searching = false;
+            s.progress = 0;
+        });
+    };
+}
+
+async fn try_search(param: crate::Param, state: RwSignal<crate::State>) -> crate::Result {
+    state.update(|s| s.errors = Vec::new());
+
     if param.r#where.is_empty() {
         return Ok(());
     }
