@@ -20,6 +20,23 @@ use taginfo::Taginfo;
 
 pub(crate) type Result<T = ()> = std::result::Result<T, leptos::error::Error>;
 
+#[derive(Debug)]
+pub(crate) enum Error {
+    LocationNotFound(String),
+}
+
+impl std::error::Error for Error {}
+
+impl std::fmt::Display for Error {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let s = match self {
+            Self::LocationNotFound(location) => format!("Location not found: {location}"),
+        };
+
+        f.write_str(&s)
+    }
+}
+
 #[derive(Clone, Debug, Default, PartialEq)]
 pub(crate) struct State {
     pub errors: Vec<String>,

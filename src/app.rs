@@ -197,9 +197,13 @@ async fn location(r#where: &str) -> crate::Result<crate::Location> {
         r#where
     );
 
-    let location = reqwest::get(&url).await?.json::<Vec<_>>().await?.remove(0);
+    let locations = reqwest::get(&url).await?.json::<Vec<_>>().await?;
 
-    Ok(location)
+    locations
+        .first()
+        .cloned()
+        .ok_or_else(|| crate::Error::LocationNotFound(r#where.to_string()))
+        .map_err(leptos::error::Error::from)
 }
 
 async fn update_nodes(param: &crate::Param, r#box: &[String]) -> crate::Result<crate::Overpass> {
