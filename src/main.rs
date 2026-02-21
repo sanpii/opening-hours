@@ -23,6 +23,10 @@ pub(crate) type Result<T = ()> = std::result::Result<T, leptos::error::Error>;
 #[derive(Debug)]
 pub(crate) enum Error {
     LocationNotFound(String),
+    Http {
+        domain: String,
+        status: reqwest::StatusCode,
+    },
 }
 
 impl std::error::Error for Error {}
@@ -31,6 +35,7 @@ impl std::fmt::Display for Error {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         let s = match self {
             Self::LocationNotFound(location) => format!("Lieux introuvable : {location}"),
+            Self::Http { domain, status } => format!("{domain}: {status}"),
         };
 
         f.write_str(&s)
@@ -57,4 +62,20 @@ fn favorites() -> Vec<u64> {
     use gloo::storage::Storage as _;
 
     gloo::storage::LocalStorage::get::<Vec<u64>>("favorites").unwrap_or_default()
+}
+
+async fn request<T: serde::de::DeserializeOwned>(url: &str) -> crate::Result<T> {
+    let url = reqwest::Url::parse(url)?;
+    let response = reqwest::get(url.clone()).await?;
+    let status = response.status();
+
+    if !status.is_success() {
+        return Err(crate::Error::Http {
+            domain: url.domain().unwrap().to_string(),
+            status,
+        }
+        .into());
+    }
+
+    response.json().await.map_err(leptos::error::Error::from)
 }

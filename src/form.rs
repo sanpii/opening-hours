@@ -8,12 +8,7 @@ where
     let param = RwSignal::new(param.get_untracked());
     let types = LocalResource::new(|| async move {
         let url = "https://taginfo.openstreetmap.org/api/4/key/values?key=amenity&filter=all&lang=fr&sortname=count&sortorder=desc&rp=50&page=1";
-        let mut taginfo = reqwest::get(url)
-            .await
-            .unwrap()
-            .json::<crate::Taginfo>()
-            .await
-            .unwrap();
+        let mut taginfo = super::request::<crate::Taginfo>(url).await.unwrap();
         taginfo.data.sort_by(|a, b| a.value.cmp(&b.value));
 
         taginfo

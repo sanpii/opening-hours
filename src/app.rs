@@ -224,7 +224,7 @@ async fn location(r#where: &str) -> crate::Result<crate::Location> {
         r#where.trim(),
     );
 
-    let locations = reqwest::get(&url).await?.json::<Vec<_>>().await?;
+    let locations = crate::request::<Vec<_>>(&url).await?;
 
     locations
         .first()
@@ -235,11 +235,10 @@ async fn location(r#where: &str) -> crate::Result<crate::Location> {
 
 async fn update_nodes(param: &crate::Param, r#box: &[String]) -> crate::Result<crate::Overpass> {
     let filter = param.as_filter(r#box);
-    let request = format!("[out:json][timeout:25]; (way{filter} >; node{filter}); out+body;");
+    let data = format!("[out:json][timeout:25]; (way{filter} >; node{filter}); out+body;");
+    let url = format!("https://overpass-api.de/api/interpreter?data={data}");
 
-    let url = format!("https://overpass-api.de/api/interpreter?data={request}");
-
-    let nodes = reqwest::get(&url).await?.json::<crate::Overpass>().await?;
+    let nodes = crate::request::<crate::Overpass>(&url).await?;
 
     Ok(nodes)
 }
@@ -258,7 +257,7 @@ async fn nodes(ids: Vec<u64>) -> crate::Result<Vec<crate::Node>> {
         "https://overpass-api.de/api/interpreter?data=[out:json][timeout:25];node(id:{id});out+body;"
     );
 
-    let nodes = reqwest::get(&url).await?.json::<crate::Overpass>().await?;
+    let nodes = crate::request(&url).await?;
 
     Ok(transform_nodes(nodes))
 }
