@@ -46,11 +46,11 @@ impl Param {
         }
 
         if self.r#type != "all" {
-            filter += &format!("[\"amenity\"=\"{}\"]", self.r#type);
+            filter += &format!("[\"amenity\"=\"{}\"]", self.r#type.trim());
         }
 
         if !self.what.is_empty() {
-            filter += &format!("[\"name\"~\".*{}.*\", i]", self.what);
+            filter += &format!("[\"name\"~\".*{}.*\", i]", self.what.trim());
         }
 
         filter += &format!("({},{},{},{});", r#box[0], r#box[2], r#box[1], r#box[3]);

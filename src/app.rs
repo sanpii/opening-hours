@@ -221,7 +221,7 @@ fn push(state: RwSignal<crate::State>) {
 async fn location(r#where: &str) -> crate::Result<crate::Location> {
     let url = format!(
         "https://nominatim.openstreetmap.org/search.php?q={}&format=jsonv2",
-        r#where
+        r#where.trim(),
     );
 
     let locations = reqwest::get(&url).await?.json::<Vec<_>>().await?;
