@@ -114,7 +114,7 @@ where
             <input
                 type="checkbox"
                 class="form-check-input"
-                value=value()
+                checked=value()
                 on:input=move |ev| on_toggle(event_target_checked(&ev))
             />
             <label class="form-check-label">{ children() }</label>
