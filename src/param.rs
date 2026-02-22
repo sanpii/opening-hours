@@ -1,12 +1,13 @@
 #[derive(Clone, Debug, PartialEq)]
 pub(crate) struct Param {
-    pub r#where: String,
+    pub open: bool,
     pub r#type: String,
-    pub what: String,
-    pub wo_hour: bool,
-    pub wifi: bool,
-    pub vegetarian: bool,
+    pub r#where: String,
     pub vegan: bool,
+    pub vegetarian: bool,
+    pub what: String,
+    pub wifi: bool,
+    pub wo_hour: bool,
 }
 
 impl Param {
@@ -15,14 +16,14 @@ impl Param {
         query: &leptos_router::params::ParamsMap,
     ) -> Self {
         Self {
-            r#where: params.get("where").unwrap_or_default(),
+            open: query.get("open").is_some(),
             r#type: params.get("type").unwrap_or_default(),
-            what: params.get("what").unwrap_or_default(),
-
-            wo_hour: query.get("wo_hour").is_some(),
-            wifi: query.get("wifi").is_some(),
-            vegetarian: query.get("vegetarian").is_some(),
+            r#where: params.get("where").unwrap_or_default(),
             vegan: query.get("vegan").is_some(),
+            vegetarian: query.get("vegetarian").is_some(),
+            what: params.get("what").unwrap_or_default(),
+            wifi: query.get("wifi").is_some(),
+            wo_hour: query.get("wo_hour").is_some(),
         }
     }
 
@@ -77,6 +78,9 @@ impl Param {
 
         let mut params = Vec::new();
 
+        if self.open {
+            params.push("open");
+        }
         if self.wo_hour {
             params.push("wo_hour");
         }
@@ -97,13 +101,14 @@ impl Param {
 impl Default for Param {
     fn default() -> Self {
         Self {
-            r#where: String::new(),
+            open: false,
             r#type: "all".to_string(),
-            what: String::new(),
-            wo_hour: false,
-            wifi: false,
-            vegetarian: false,
+            r#where: String::new(),
             vegan: false,
+            vegetarian: false,
+            what: String::new(),
+            wifi: false,
+            wo_hour: false,
         }
     }
 }

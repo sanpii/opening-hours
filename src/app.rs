@@ -197,7 +197,7 @@ async fn try_search(param: crate::Param, state: RwSignal<crate::State>) -> crate
 
     push(state);
 
-    let nodes = transform_nodes(nodes);
+    let nodes = transform_nodes(nodes, param.open);
 
     push(state);
 
@@ -259,11 +259,16 @@ async fn nodes(ids: Vec<u64>) -> crate::Result<Vec<crate::Node>> {
 
     let nodes = crate::request(&url).await?;
 
-    Ok(transform_nodes(nodes))
+    Ok(transform_nodes(nodes, false))
 }
 
-fn transform_nodes(nodes: crate::Overpass) -> Vec<crate::Node> {
+fn transform_nodes(nodes: crate::Overpass, only_open: bool) -> Vec<crate::Node> {
     let mut nodes: Vec<crate::Node> = nodes.into();
+
+    if only_open {
+        nodes.retain(|x| x.state != opening_hours::RuleKind::Closed);
+    }
+
     nodes.sort();
 
     nodes

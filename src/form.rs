@@ -76,6 +76,10 @@ where
                     on_toggle=move |value| param.update(|p| p.wo_hour = value)
                 >Sans horaire</Checkbox>
                 <Checkbox
+                    value=move || param.get().open
+                    on_toggle=move |value| param.update(|p| p.open = value)
+                >Ouvert</Checkbox>
+                <Checkbox
                     value=move || param.get().wifi
                     on_toggle=move |value| param.update(|p| p.wifi = value)
                 >Avec wifi</Checkbox>
