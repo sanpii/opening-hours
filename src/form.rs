@@ -6,9 +6,12 @@ where
     F: Fn(crate::Param) + 'static,
 {
     let param = RwSignal::new(param.get_untracked());
-    let types = LocalResource::new(|| async move {
-        let url = "https://taginfo.openstreetmap.org/api/4/key/values?key=amenity&filter=all&lang=fr&sortname=count&sortorder=desc&rp=50&page=1";
-        let mut taginfo = super::request::<crate::Taginfo>(url).await.unwrap();
+    let types = LocalResource::new(move || async move {
+        let url = format!(
+            "https://taginfo.openstreetmap.org/api/4/key/values?key=amenity&filter=all&lang=fr&sortname=count&sortorder=desc&rp=50&page=1&query={}",
+            param.get().r#type,
+        );
+        let mut taginfo = super::request::<crate::Taginfo>(&url).await.unwrap();
         taginfo.data.sort_by(|a, b| a.value.cmp(&b.value));
 
         taginfo
