@@ -6,10 +6,11 @@ where
     F: Fn(crate::Param) + 'static,
 {
     let param = RwSignal::new(param.get_untracked());
+    let r#type = signal(param.get().r#type);
     let types = LocalResource::new(move || async move {
         let url = format!(
             "https://taginfo.openstreetmap.org/api/4/key/values?key=amenity&filter=all&lang=fr&sortname=count&sortorder=desc&rp=50&page=1&query={}",
-            param.get().r#type,
+            r#type.0.get(),
         );
         let mut taginfo = super::request::<crate::Taginfo>(&url).await.unwrap();
         taginfo.data.sort_by(|a, b| a.value.cmp(&b.value));
@@ -33,29 +34,10 @@ where
             </div>
 
             <div class="input-group mb-3">
-                <input
-                    type="text"
-                    value=move || param.get().r#type
-                    placeholder="Quoi ?"
-                    class="form-control"
-                    list="types"
-                    on:input=move |ev| {
-                    param.update(|p| p.r#type = event_target_value(&ev));
-                }
+                <Select
+                    value=r#type
+                    choices=types
                 />
-                <datalist id="types">
-                    {move || match types.get() {
-                        None => View::new(()).into_any(),
-                        Some(types) => leptos::view! {
-                            <For each=move || types.data.clone() key=|ty| ty.value.clone() let:ty>
-                                <option value=ty.clone().value>
-                                    <span class=ty.icon().unwrap_or_default()></span>
-                                    { ty.value.clone() }
-                                </option>
-                            </For>
-                        }.into_any()
-                    }}
-                </datalist>
             </div>
 
             <div class="input-group mb-3">
@@ -83,7 +65,7 @@ where
                     value=move || param.get().wifi
                     on_toggle=move |value| param.update(|p| p.wifi = value)
                 >Avec wifi</Checkbox>
-                <Show when=move || param.get().r#type == "restaurant">
+                <Show when=move || r#type.0.get() == "restaurant">
                     <Checkbox
                         value=move || param.get().vegetarian
                         on_toggle=move |value| param.update(|p| p.vegetarian = value)
@@ -123,5 +105,36 @@ where
             />
             <label class="form-check-label">{ children() }</label>
         </div>
+    }
+}
+
+#[leptos::component]
+fn Select<C, G, S>(
+    value: (G, S),
+    choices: C,
+) -> impl leptos::IntoView
+where
+    G: Get<Value = String> + Clone + Send + Sync + 'static,
+    S: Set<Value = String> + Clone + Send + Sync + 'static,
+    C: Get<Value = Option<crate::Taginfo>> + Send + Sync + 'static,
+{
+    leptos::view! {
+        <input
+            type="text"
+            bind:value=value
+            placeholder="Quoi ?"
+            class="form-control"
+            list="types"
+        />
+        <ul class="dropdown-menu autocomplete">
+            <For each=move || choices.get().map(|x| x.data).unwrap_or_default() key=|choice| choice.value.clone() let:choice>
+                <li>
+                    <button class="dropdown-item">
+                        <span class=choice.icon().unwrap_or_default()></span>
+                        { choice.value.clone() }
+                    </button>
+                </li>
+            </For>
+        </ul>
     }
 }

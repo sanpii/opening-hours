@@ -197,7 +197,7 @@ pub(crate) fn Progress(
             } else {
                 String::new()
             },
-            _comment: range.comments.join("\n"),
+            _comment: range.comment.to_string(),
             size: (end - start).num_minutes() as f32 * 100. / 1440.,
         });
     }

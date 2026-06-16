@@ -125,3 +125,7 @@ span.open {
     vertical-align: baseline;
     max-height: 32px;
 }
+
+.autocomplete {
+    z-index: 9999;
+}

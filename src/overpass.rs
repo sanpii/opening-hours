@@ -34,13 +34,13 @@ impl Element {
             return opening_hours::RuleKind::Unknown;
         };
 
-        let opening = match opening_hours::OpeningHours::parse(opening_hours) {
+        let opening: opening_hours::OpeningHours = match opening_hours.parse() {
             Ok(opening) => opening,
             Err(_) => return opening_hours::RuleKind::Unknown,
         };
         let now = chrono::Local::now().naive_local();
 
-        opening.state(now)
+        opening.state(now).0
     }
 
     pub fn icon(&self) -> Option<String> {
