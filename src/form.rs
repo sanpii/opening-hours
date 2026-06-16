@@ -109,10 +109,7 @@ where
 }
 
 #[leptos::component]
-fn Select<C, G, S>(
-    value: (G, S),
-    choices: C,
-) -> impl leptos::IntoView
+fn Select<C, G, S>(value: (G, S), choices: C) -> impl leptos::IntoView
 where
     G: Get<Value = String> + Clone + Send + Sync + 'static,
     S: Set<Value = String> + Clone + Send + Sync + 'static,

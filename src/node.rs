@@ -31,9 +31,7 @@ impl Node {
     }
 
     pub fn opening_hours(&self) -> Option<opening_hours::OpeningHours> {
-        self.tags
-            .get("opening_hours")
-            .and_then(|x| x.parse().ok())
+        self.tags.get("opening_hours").and_then(|x| x.parse().ok())
     }
 
     pub fn next_change(&self) -> Option<String> {
