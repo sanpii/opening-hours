@@ -77,7 +77,7 @@ where
                 </Show>
             </div>
 
-            <button class="btn btn-primary" on:click=move |ev| {
+            <button class="btn-solid theme-primary" on:click=move |ev| {
                 ev.prevent_default();
                 on_search(param.get());
             }>Rechercher</button>
