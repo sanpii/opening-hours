@@ -34,7 +34,7 @@ pub(crate) fn Item(node: crate::Node) -> impl leptos::IntoView {
 
     let favorite = move |_| {
         node.get().favorite();
-        node_set.update(|n| n.favorite = !n.favorite);
+        node_set.update(|n| n.favorite.toggle());
     };
 
     leptos::view! {
