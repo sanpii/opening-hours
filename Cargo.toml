@@ -14,7 +14,7 @@ wasm-logger = "0.2"
 
 [dependencies.gloo]
 default-features = false
-version = "0.12"
+version = "0.13"
 features = ["storage"]
 
 [dependencies.leptos]
